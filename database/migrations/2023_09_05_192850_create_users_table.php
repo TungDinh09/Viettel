@@ -31,8 +31,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('CityID')->references('id')->on('cities');
-            $table->foreign('DistrictID')->references('id')->on('districts');
+            $table->foreign('CityID')->references('CityID')->on('cities');
+            $table->foreign('DistrictID')->references('DistrictID')->on('districts');
         });
     }
 
