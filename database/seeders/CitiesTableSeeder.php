@@ -45,7 +45,10 @@ class CitiesTableSeeder extends Seeder
             ['CityID' => 30, 'CityName' => 'Quảng Bình', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 31, 'CityName' => 'Quảng Trị', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 32, 'CityName' => 'Thừa Thiên-Huế', 'created_at' => now(), 'updated_at' => now()],
-            ['CityID' => 33, 'CityName' => 'Đà Nẵng', 'created_at' => now(), 'updated_at' => now()],
+            
+            //--------------33---------------------
+            ['CityID' => 33, 'CityName' => 'Hòa Bình', 'created_at' => now(), 'updated_at' => now()],
+
             ['CityID' => 34, 'CityName' => 'Quảng Nam', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 35, 'CityName' => 'Quảng Ngãi', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 36, 'CityName' => 'Bình Định', 'created_at' => now(), 'updated_at' => now()],
@@ -70,12 +73,17 @@ class CitiesTableSeeder extends Seeder
             ['CityID' => 55, 'CityName' => 'Đồng Tháp', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 56, 'CityName' => 'An Giang', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 57, 'CityName' => 'Kiên Giang', 'created_at' => now(), 'updated_at' => now()],
-            ['CityID' => 58, 'CityName' => 'Cần Thơ', 'created_at' => now(), 'updated_at' => now()],
+
+            //------58--------------------------------------------,
+            ['CityID' => 58, 'CityName' => 'Điện Biên', 'created_at' => now(), 'updated_at' => now()],
+
             ['CityID' => 59, 'CityName' => 'Hậu Giang', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 60, 'CityName' => 'Sóc Trăng', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 61, 'CityName' => 'Bạc Liêu', 'created_at' => now(), 'updated_at' => now()],
             ['CityID' => 62, 'CityName' => 'Cà Mau', 'created_at' => now(), 'updated_at' => now()],
-            ['CityID' => 63, 'CityName' => 'Bắc Liêu', 'created_at' => now(), 'updated_at' => now()],
+            //--------63--------------
+            ['CityID' => 63, 'CityName' => 'Bà Rịa-Vũng Tàu', 'created_at' => now(), 'updated_at' => now()],
+
         ];
 
         DB::table('cities')->insert($cities);
