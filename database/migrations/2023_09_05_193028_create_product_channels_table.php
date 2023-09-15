@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('ChannelID')->references('ChannelID')->on('channels');
-            $table->foreign('ProductID')->references('ProductID')->on('products');
+        //    $table->foreign('ProductID')->references('ProductID')->on('products');
         });
     }
 
