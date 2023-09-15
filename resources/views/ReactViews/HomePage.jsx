@@ -7,7 +7,6 @@ export default function HomePage(){
     <a href="/login" className="text-blue-400">Login</a> |
     <a href="/register" className="text-blue-400">Register</a> |
     <a href="/forgot" className="text-blue-400">Forgot</a> |
-
     <a href="/about" className="text-blue-400">About</a> |
     </>)
 }
