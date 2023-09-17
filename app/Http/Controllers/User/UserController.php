@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function create()
     {
-       
+
     }
 
     /**
@@ -29,7 +29,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
          $user =  new User;
-        
+
         $dateofbirth = $request->Year+"/"+$request->Month+"/"+$request->Day;
         $user->FirstName = $request->FirstName;
         $user->LastName = $request->LastName;
@@ -47,9 +47,9 @@ class UserController extends Controller
         } else{
             $user->Avatar = $request->Avatar;
         }
-        
+
         //   $user->RoleID = 1
-        
+
         $user->save();
         return "Insert thanh cong";
     }
@@ -96,9 +96,9 @@ class UserController extends Controller
         } else{
             $user->Avatar = $request->Avatar;
         }
-        
+
         //   $user->RoleID = 1
-        
+
         $user->save();
         return "Insert thanh cong";
     }
