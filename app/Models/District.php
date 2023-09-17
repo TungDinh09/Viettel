@@ -10,5 +10,13 @@ class District extends Model
     use HasFactory;
     protected $table = 'districts';
     protected $primaryKey = 'DistrictID';
-    public $timestamps = true;
+    protected $fillable = [
+        'DistrictName',
+        'CityID',
+    ];
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'CityID', 'CityID');
+    }
 }

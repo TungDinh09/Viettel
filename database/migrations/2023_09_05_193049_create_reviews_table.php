@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('reviewID');
             $table->string('Comment', 225);
             $table->integer('Rate');
-            $table->unsignedBigInteger('ProductID');
+            $table->string('ProductID');
             $table->unsignedBigInteger('UserID');
             $table->timestamps();
 

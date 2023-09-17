@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_channels', function (Blueprint $table) {
             $table->id('product_channelID');
             $table->unsignedBigInteger('ChannelID');
-            $table->unsignedBigInteger('ProductID');
+            $table->string('ProductID');
             $table->timestamps();
 
             $table->foreign('ChannelID')->references('ChannelID')->on('channels');

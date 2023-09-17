@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class PaymentController extends Controller
 {
     /**
@@ -28,12 +28,26 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $payment = new Payment();    
+        DB::beginTransaction();
+
+    try {
+        $payment = new Payment();
         $payment->PaymentName = $request->input('PaymentName');
         $payment->PaymentDescription = $request->input('PaymentDescription');
-        $payment->DayPayment = $request->input("Dayment");
-        $payment ->save();
-        return;
+        $payment->DayPayment = $request->input("DayPayment");
+        $payment->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Insert thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -57,16 +71,32 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        DB::beginTransaction();
+
+    try {
         $payment = Payment::find($id);
 
         if (!$payment) {
-            return response()->json(['message' => 'Product not found'], 404);
+            DB::rollback(); // Rollback transaction nếu thanh toán không tồn tại
+            return response()->json(['message' => 'Payment not found'], 404);
         }
+
         $payment->PaymentName = $request->input('PaymentName');
         $payment->PaymentDescription = $request->input('PaymentDescription');
-        $payment->DayPayment = $request->input("Dayment");
-        $payment ->save();
-        return;
+        $payment->DayPayment = $request->input("DayPayment");
+        $payment->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Update thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -74,11 +104,28 @@ class PaymentController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
+
+    try {
         $payment = Payment::find($id);
+
         if (!$payment) {
+            DB::rollback(); // Rollback transaction nếu thanh toán không tồn tại
             return response()->json(['message' => 'Payment not found'], 404);
         }
+
         $payment->delete();
-        return;
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Payment deleted'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
+    }
     }
 }

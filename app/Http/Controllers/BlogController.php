@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use Illuminate\Support\Facades\DB;
 class BlogController extends Controller
 {
     /**
@@ -27,14 +28,28 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+         DB::beginTransaction();
+
+    try {
         $blog = new Blog;
-        
         $blog->BlogContent = $request->BlogContent;
-        $blog->BlogTilte = $request->BlogTilte;
-        $blog->TilteImage = $blog->TilteImage;
-        $blog->AdminID =  Auth::admin()->AdminID;
+        $blog->BlogTitle = $request->BlogTitle;
+        // Lưu ý rằng bạn cần gán giá trị của TitleImage từ $request, không phải từ $blog
+        $blog->TitleImage = $request->TitleImage;
+        $blog->AdminID = Auth::admin()->AdminID;
         $blog->save();
-         return "Insert thanh cong";
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return "Insert thành công";
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return "Insert thất bại: " . $e->getMessage();
+    }
     }
 
     /**
@@ -58,16 +73,34 @@ class BlogController extends Controller
      */
     public function update(Request $request, int $id)
     {
+         DB::beginTransaction();
+
+    try {
         $blog = Blog::find($id);
+
         if (!$blog) {
-            return response()->json(['message' => 'User not found'], 404);
+            DB::rollback(); // Rollback transaction nếu bài viết không tồn tại
+            return response()->json(['message' => 'Blog not found'], 404);
         }
+
         $blog->BlogContent = $request->BlogContent;
-        $blog->BlogTilte = $request->BlogTilte;
-        $blog->TilteImage = $blog->TilteImage;
-        $blog->AdminID =  Auth::admin()->AdminID;
+        $blog->BlogTitle = $request->BlogTitle;
+        // Lưu ý rằng bạn cần gán giá trị của TitleImage từ $request, không phải từ $blog
+        $blog->TitleImage = $request->TitleImage;
+        $blog->AdminID = Auth::admin()->AdminID;
         $blog->save();
-         return "Insert thanh cong";
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return "Cập nhật thành công";
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Update failed: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -76,11 +109,28 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
+
+    try {
         $blog = Blog::find($id);
+
         if (!$blog) {
+            DB::rollback(); // Rollback transaction nếu bài viết không tồn tại
             return response()->json(['message' => 'Blog not found'], 404);
         }
+
         $blog->delete();
-        return;
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Blog deleted'], 200);
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+            DB::rollback();
+
+            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+            return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
+        }
     }
 }

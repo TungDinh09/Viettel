@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class CategoryController extends Controller
 {
     /**
@@ -28,10 +28,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = new Category();    
+         DB::beginTransaction();
+
+    try {
+        $category = new Category();
         $category->CategoryName = $request->input('CategoryName');
-        $category ->save();
-        return;
+        $category->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Insert thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -55,14 +69,30 @@ class CategoryController extends Controller
      */
     public function update(Request $request,  $id)
     {
+        DB::beginTransaction();
+
+    try {
         $category = Category::find($id);
 
         if (!$category) {
+            DB::rollback(); // Rollback transaction nếu danh mục không tồn tại
             return response()->json(['message' => 'Category not found'], 404);
         }
+
         $category->CategoryName = $request->input('CategoryName');
-        $category ->save();
-        return;
+        $category->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Update thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
+    }
         
     }
 
@@ -71,11 +101,28 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+         DB::beginTransaction();
+
+    try {
         $category = Category::find($id);
+
         if (!$category) {
+            DB::rollback(); // Rollback transaction nếu danh mục không tồn tại
             return response()->json(['message' => 'Category not found'], 404);
         }
+
         $category->delete();
-        return;
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Category deleted'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
+    }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\District;
+use Illuminate\Support\Facades\DB;
 class DistrictController extends Controller
 {
     /**
@@ -27,11 +28,25 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        $district = new District();    
+        DB::beginTransaction();
+
+    try {
+        $district = new District();
         $district->DistrictName = $request->input('DistrictName');
         $district->CityID = $request->input('CityID');
-        $category ->save();
-        return;
+        $district->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Insert thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -55,14 +70,31 @@ class DistrictController extends Controller
      */
     public function update(Request $request,  $id)
     {
+         DB::beginTransaction();
+
+    try {
         $district = District::find($id);
+
         if (!$district) {
+            DB::rollback(); // Rollback transaction nếu quận huyện không tồn tại
             return response()->json(['message' => 'District not found'], 404);
         }
+
         $district->DistrictName = $request->input('DistrictName');
         $district->CityID = $request->input('CityID');
-        $district ->save();
-        return;
+        $district->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Update thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -70,11 +102,28 @@ class DistrictController extends Controller
      */
     public function destroy( $id)
     {
+         DB::beginTransaction();
+
+    try {
         $district = District::find($id);
+
         if (!$district) {
+            DB::rollback(); // Rollback transaction nếu quận huyện không tồn tại
             return response()->json(['message' => 'District not found'], 404);
         }
+
         $district->delete();
-        return;
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'District deleted'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
+    }
     }
 }

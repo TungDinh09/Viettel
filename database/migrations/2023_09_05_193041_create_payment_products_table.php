@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payment_products', function (Blueprint $table) {
             $table->id('payment_productID');
             $table->unsignedBigInteger('PaymentID');
-            $table->unsignedBigInteger('ProductID');
+            $table->string('ProductID');;
             $table->timestamps();
 
             $table->foreign('PaymentID')->references('PaymentID')->on('payments');

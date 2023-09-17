@@ -10,5 +10,15 @@ class Blog extends Model
     use HasFactory;
     protected $table = 'blogs';
     protected $primaryKey = 'BlogID';
-    public $timestamps = true;
+    protected $fillable = [
+        'BlogContent',
+        'BlogTilte',
+        'TilteImage',
+        'AdminID',
+    ];
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'AdminID', 'AdminID');
+    }
 }

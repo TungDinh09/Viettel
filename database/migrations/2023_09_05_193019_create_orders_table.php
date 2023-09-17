@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('ServicePrice', 10, 2)->nullable();
             $table->unsignedBigInteger('UserID');
             $table->unsignedBigInteger('PaymentID')->nullable();
-            $table->unsignedBigInteger('ProductID');
+            $table->string('ProductID');
             $table->unsignedBigInteger('ServiceID')->nullable();
             $table->timestamps();
 

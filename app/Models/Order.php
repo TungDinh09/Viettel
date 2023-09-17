@@ -10,6 +10,37 @@ class Order extends Model
     use HasFactory;
     
     protected $table = 'orders';
-    protected $primaryKey = 'OrderID';
+    protected $primaryKey = 'id';
+    protected $fillable = [
+        'ProductPrice',
+        'Accept',
+        'DateStart',
+        'ServicePrice',
+        'UserID',
+        'PaymentID',
+        'ProductID',
+        'ServiceID',
+    ];
+
     public $timestamps = true;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'UserID', 'UserID');
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'PaymentID', 'PaymentID');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'ProductID', 'ProductID');
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'ServiceID', 'ServiceID');
+    }
 }

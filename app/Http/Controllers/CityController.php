@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\City;
-
+use Illuminate\Support\Facades\DB;
 class CityController extends Controller
 {
     /**
@@ -28,10 +28,24 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $city = new City();    
+        DB::beginTransaction();
+
+    try {
+        $city = new City();
         $city->CityName = $request->input('CityName');
-        $city ->save();
-        return;
+        $city->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Insert thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -55,13 +69,30 @@ class CityController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        $city = $City::find($id);
+        DB::beginTransaction();
+
+    try {
+        $city = City::find($id);
+
         if (!$city) {
-            return response()->json(['message' => 'Category not found'], 404);
+            DB::rollback(); // Rollback transaction nếu thành phố không tồn tại
+            return response()->json(['message' => 'City not found'], 404);
         }
+
         $city->CityName = $request->input('CityName');
-        $city ->save();
-        return;
+        $city->save();
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Update thành công'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
+    }
     }
 
     /**
@@ -69,11 +100,28 @@ class CityController extends Controller
      */
     public function destroy( $id)
     {
-        $city = $City::find($id);
+        DB::beginTransaction();
+
+    try {
+        $city = City::find($id);
+
         if (!$city) {
+            DB::rollback(); // Rollback transaction nếu thành phố không tồn tại
             return response()->json(['message' => 'City not found'], 404);
         }
+
         $city->delete();
-        return;
+
+        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+        DB::commit();
+
+        return response()->json(['message' => 'City deleted'], 200);
+    } catch (\Exception $e) {
+        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+        DB::rollback();
+
+        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+        return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
+    }
     }
 }
