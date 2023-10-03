@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\District;
+use App\Exports\DistrictExport;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+
 class DistrictController extends Controller
 {
     /**
@@ -125,5 +128,9 @@ class DistrictController extends Controller
         // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
         return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
     }
+    }
+    public function export(){
+        $districts = District::all();
+        return Excel::download(new DistrictExport($districts), 'districts.xlsx');
     }
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PaymentExport;
+
 class PaymentController extends Controller
 {
     /**
@@ -127,5 +130,9 @@ class PaymentController extends Controller
         // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
         return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
     }
+    }
+    public function export(){
+        $payments = Payment::all();
+        return Excel::download(new PaymentExport($payments), 'payments.xlsx');
     }
 }

@@ -6,7 +6,14 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\PaymentProduct;
 use App\Models\ProductChannel;
+
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductExport;
+use App\Exports\PaymentProductExport;
+use App\Exports\ProductChannelExport;
 use Illuminate\Support\Facades\DB;
+
+
 class ProductController extends Controller
 {
     /**
@@ -209,5 +216,17 @@ public function update(Request $request, $id)
             DB::rollBack();
             return response()->json(['message' => 'Failed to delete product', 'error' => $e->getMessage()], 500);
         }
+    }
+    public function export(){
+        $products = Product::all();
+        return Excel::download(new ProductExport($products), 'products.xlsx');
+    }
+    public function exportPaymentProduct(){
+        $PaymentProducts = PaymentProduct::all();
+        return Excel::download(new PaymentProductExport($PaymentProducts), 'payment_of_products.xlsx');
+    }
+    public function expor(){
+        $productchannels = ProductChannel::all();
+        return Excel::download(new ProductChannelExport($productchannels), 'channel_of_products.xlsx');
     }
 }

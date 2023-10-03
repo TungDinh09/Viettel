@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\City;
+use Illuminate\Support\Facades\DB;
 
 class CitiesTableSeeder extends Seeder
 {

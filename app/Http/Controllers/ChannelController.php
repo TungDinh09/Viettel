@@ -126,4 +126,5 @@ class ChannelController extends Controller
         return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
     }
     }
+    
 }
