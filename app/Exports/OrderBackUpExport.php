@@ -4,8 +4,12 @@ namespace App\Exports;
 
 use App\Models\Order;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class OrderExport implements FromArray, WithHeadings, WithMapping
+
+class OrderBackUpExport implements FromArray, WithHeadings, WithMapping
 {
     protected $data;
     public function __construct($data)
@@ -34,9 +38,9 @@ class OrderExport implements FromArray, WithHeadings, WithMapping
             'DateStart',
             'ServicePrice',
             'UserID',
-            'PaymentName',
-            'ProductName',
-            'ServiceName',
+            'PaymentID',
+            'ProductID',
+            'ServiceID',
         ];
     }
     /**
@@ -60,9 +64,9 @@ class OrderExport implements FromArray, WithHeadings, WithMapping
             $row['DateStart'],
             $row['ServicePrice'],
             $row['UserID'],
-            $row['PaymentName'],
-            $row['ProductName'],
-            $row['ServiceName'],
+            $row['PaymentID'],
+            $row['ProductID'],
+            $row['ServiceID'],
         ];
     }
 }

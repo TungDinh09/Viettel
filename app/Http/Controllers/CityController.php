@@ -7,7 +7,7 @@ use App\Models\City;
 use Illuminate\Support\Facades\DB;
 use App\Exports\CityExport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use App\Imports\CityImport;
 
 class CityController extends Controller
 {
@@ -131,5 +131,10 @@ class CityController extends Controller
     public function export(){
         $cities = City::all();
         return Excel::download(new CityExport($cities), 'cities.xlsx');
+    }
+    public function import(){
+        $filePath = "C:\\Users\\tungd\\Downloads\\cities.xlsx";
+        Excel::import(new CityImport, $filePath);
+        // return redirect('/')->with('success', 'All good!');
     }
 }

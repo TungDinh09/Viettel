@@ -18,3 +18,4 @@ use  App\Http\Controllers\CityController;
 // })->where('any', '.*');
 
 Route::get('/city_export', [CityController::class, 'export']);
+Route::get('/city_import', [CityController::class, 'import']);

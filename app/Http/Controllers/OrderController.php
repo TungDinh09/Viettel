@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
+use App\Exports\OrderBackUpExport;
+use App\Exports\OrderExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class OrderController extends Controller
 {
     /**
@@ -96,6 +100,56 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+    }
+    
+    public function exportBackUp(){
+        $orderBackup = Order::all(); 
+        return Excel::download(new OrderBackUpExport($orderBackup), 'Order_BackUp.xlsx');
+    }
+    public function export(){
+        $order = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
+    ->leftJoin('payments', 'orders.PaymentID', '=', 'payments.PaymentID')
+    ->leftJoin('services', 'orders.ServiceID', '=', 'services.ServiceID')
+    ->select([
+        'OrderID',
+        'ProductPrice',
+        'Accept',
+        'name',
+        'Phone',
+        'email',
+        'DateStart',
+        'ServicePrice',
+        'UserID',
+        'PaymentName',
+        'ProductName',
+        'ServiceName',
+    ])
+    ->get();
+
+        return Excel::download(new OrderExport($order), 'Order.xlsx');
+                
+    }
+    public function exportActiveFalse(){
+        $order = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
+    ->leftJoin('payments', 'orders.PaymentID', '=', 'payments.PaymentID')
+    ->leftJoin('services', 'orders.ServiceID', '=', 'services.ServiceID')
+    ->where('orders.Accept', '=', false)
+    ->select([
+        'OrderID',
+        'ProductPrice',
+        'Accept',
+        'name',
+        'Phone',
+        'email',
+        'DateStart',
+        'ServicePrice',
+        'UserID',
+        'PaymentName',
+        'ProductName',
+        'ServiceName',
+    ])
+    ->get();
+        return Excel::download(new OrderExport($order), 'Order_NonAccept.xlsx');
+                
     }
 }
