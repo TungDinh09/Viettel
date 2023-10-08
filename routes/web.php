@@ -18,3 +18,6 @@ use  App\Http\Controllers\CityController;
 // })->where('any', '.*');
 
 Route::get('/city_export', [CityController::class, 'export']);
+Route::get('/import', [CityController::class, 'showForm']);
+Route::post('/import', [CityController::class, 'import']);
+

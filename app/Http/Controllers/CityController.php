@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\City;
 use Illuminate\Support\Facades\DB;
 use App\Exports\CityExport;
+use App\Imports\CitiesImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -132,4 +133,19 @@ class CityController extends Controller
         $cities = City::all();
         return Excel::download(new CityExport($cities), 'cities.xlsx');
     }
+    public function showForm()
+{
+    return view('import');
+}
+
+public function import(Request $request)
+{
+    // $request->validate([
+    //     'file' => 'required|mimes:xlsx,xls',
+    // ]);
+
+    Excel::import(new CitiesImport, $request->file('file'));
+
+    return redirect('/import')->with('success', 'Excel file imported successfully.');
+}
 }
