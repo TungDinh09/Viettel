@@ -13,9 +13,9 @@ use  App\Http\Controllers\CityController;
 |
 */
 
-// Route::get('/{any}', function () {
-//     return view('welcome');
-// })->where('any', '.*');
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');
 
-Route::get('/city_export', [CityController::class, 'export']);
-Route::get('/city_import', [CityController::class, 'import']);
+// Route::get('/city_export', [CityController::class, 'export']);
+// Route::get('/city_import', [CityController::class, 'import']);
