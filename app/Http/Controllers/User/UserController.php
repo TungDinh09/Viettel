@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UserExport;
+
+
 class UserController extends Controller
 {
     /**
@@ -159,5 +163,9 @@ class UserController extends Controller
         // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
         return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
     }
+    }
+    public function export(){
+        $user = User::all();
+        return Excel::download(new UserExport($admin), 'users.xlsx');
     }
 }

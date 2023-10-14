@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\District;
 use App\Exports\DistrictExport;
 use Illuminate\Support\Facades\DB;
+use App\Imports\DistrictImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DistrictController extends Controller
@@ -132,5 +133,22 @@ class DistrictController extends Controller
     public function export(){
         $districts = District::all();
         return Excel::download(new DistrictExport($districts), 'districts.xlsx');
+    }
+    public function import(Request $request){
+        // $filePath = "C:\\Users\\tungd\\Downloads\\cities.xlsx";
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+
+            // Import dữ liệu từ tệp tin Excel bằng thư viện Maatwebsite\Excel
+            Excel::import(new DistrictImport, $filePath);
+
+            // Thực hiện xử lý khác (nếu cần)
+
+            
+        }
+        // chua code route
     }
 }

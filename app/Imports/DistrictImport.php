@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Models\District;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class DistrictImport implements ToModel
+class DistrictImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -14,8 +14,16 @@ class DistrictImport implements ToModel
     */
     public function model(array $row)
     {
-        return new District([
-            //
+        // echo("haha");
+        // print_r($row);
+        return new City([
+            'DistrictID'  => $row['districtid'],
+           'DistrictName'  => $row['districtname'], 
+           'CityID' => $row['cityid']
         ]);
+    }
+    public function headingRow(): int
+    {
+        return 1;
     }
 }

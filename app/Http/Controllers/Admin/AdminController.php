@@ -7,6 +7,9 @@ use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AdminExport;
+
 class AdminController extends Controller
 {
     /**
@@ -162,5 +165,9 @@ class AdminController extends Controller
         return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
     }
         
+    }
+    public function export(){
+        $admin = Admin::all();
+        return Excel::download(new AdminExport($admin), 'admins.xlsx');
     }
 }
