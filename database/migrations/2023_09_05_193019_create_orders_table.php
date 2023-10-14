@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id('Orders');
             $table->decimal('ProductPrice', 10, 2);
             $table->boolean('Accept');
+            $table->string('name', 225)->unique();
+            $table->char('Phone', 11);
+            $table->string('email', 225)->unique();
             $table->date('DateStart');
             $table->decimal('ServicePrice', 10, 2)->nullable();
             $table->unsignedBigInteger('UserID');

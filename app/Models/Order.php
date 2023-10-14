@@ -14,6 +14,9 @@ class Order extends Model
     protected $fillable = [
         'ProductPrice',
         'Accept',
+        'name',
+        'Phone',
+        'email',
         'DateStart',
         'ServicePrice',
         'UserID',

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\CityExport;
 use App\Imports\CitiesImport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use App\Imports\CityImport;
 
 class CityController extends Controller
 {
@@ -133,19 +133,21 @@ class CityController extends Controller
         $cities = City::all();
         return Excel::download(new CityExport($cities), 'cities.xlsx');
     }
-    public function showForm()
-{
-    return view('import');
-}
+    public function import(Request $request){
+        // $filePath = "C:\\Users\\tungd\\Downloads\\cities.xlsx";
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
 
-public function import(Request $request)
-{
-    // $request->validate([
-    //     'file' => 'required|mimes:xlsx,xls',
-    // ]);
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
 
-    Excel::import(new CitiesImport, $request->file('file'));
+            // Import dữ liệu từ tệp tin Excel bằng thư viện Maatwebsite\Excel
+            Excel::import(new CityImport, $filePath);
 
-    return redirect('/import')->with('success', 'Excel file imported successfully.');
-}
+            // Thực hiện xử lý khác (nếu cần)
+
+            
+        }
+        // chua code route
+    }
 }
