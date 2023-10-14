@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use App\Models\District;
+use App\Models\Service;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class DistrictImport implements ToModel,WithHeadingRow
+class ServicesImport implements ToModel,WithHeadingRow
 {
     /**
     * @param Collection $collection
@@ -28,12 +28,10 @@ class DistrictImport implements ToModel,WithHeadingRow
     */
     public function model(array $row)
     {
-        return new District([
+        return new Service([
             //
-            'DistrictID '=> $row['districtid'],
-            'DistrictName' => $row['districtname'],
-            'CityID' => $row['cityid'],
-
+            'ServiceID '=> $row['serviceid'],
+            'ServiceName' => $row['servicename']
         ]);
     }
 }

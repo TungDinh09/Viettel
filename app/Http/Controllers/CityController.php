@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\City;
 use Illuminate\Support\Facades\DB;
 use App\Exports\CityExport;
+use App\Imports\CitiesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CityImport;
 
