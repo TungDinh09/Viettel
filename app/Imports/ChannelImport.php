@@ -2,21 +2,18 @@
 
 namespace App\Imports;
 
-use App\Models\District;
+use App\Models\Channel;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class DistrictImport implements ToModel,WithHeadingRow
+class ChannelImport implements ToModel,WithHeadingRow
 {
     /**
     * @param Collection $collection
     */
-    public function collection(Collection $collection)
-    {
-        //
-    }
+
     public function headingRow() : int
     {
         return 1;
@@ -28,13 +25,11 @@ class DistrictImport implements ToModel,WithHeadingRow
     */
     public function model(array $row)
     {
-        return new District([
+        return new Channel([
             //
-            'DistrictID '=> $row['districtid'],
-            'DistrictName' => $row['districtname'],
-            'CityID' => $row['cityid'],
-
+            'ChannelID '=> $row['channelid'],
+            'ChanelName' => $row['channelname'],
+            'Price' => $row['price']
         ]);
     }
-    
 }

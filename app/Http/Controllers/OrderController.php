@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Service;
 use App\Exports\OrderBackUpExport;
 use App\Exports\OrderExport;
+use App\Imports\OrderImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
@@ -149,7 +150,16 @@ class OrderController extends Controller
         'ServiceName',
     ])
     ->get();
-        return Excel::download(new OrderExport($order), 'Order_NonAccept.xlsx');
-                
+        return Excel::download(new OrderExport($order), 'Order_NonAccept.xlsx'); 
+    }
+    public function import(Request $request){
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new OrderImport, $filePath);        
+          
+        }
     }
 }

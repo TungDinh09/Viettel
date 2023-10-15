@@ -168,4 +168,13 @@ class UserController extends Controller
         $user = User::all();
         return Excel::download(new UserExport($admin), 'users.xlsx');
     }
+    public function import(){
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new UserImport, $filePath);
+        }
+    }
 }

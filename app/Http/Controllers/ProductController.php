@@ -9,8 +9,11 @@ use App\Models\ProductChannel;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductExport;
+use App\Imports\ProductImport;
 use App\Exports\PaymentProductExport;
+use App\Imports\PaymentProductImport;
 use App\Exports\ProductChannelExport;
+use App\Imports\ProductChannelImport;
 use Illuminate\Support\Facades\DB;
 
 
@@ -217,16 +220,57 @@ public function update(Request $request, $id)
             return response()->json(['message' => 'Failed to delete product', 'error' => $e->getMessage()], 500);
         }
     }
-    public function export(){
+    public function export_backup(){
         $products = Product::all();
         return Excel::download(new ProductExport($products), 'products.xlsx');
-    }
-    public function exportPaymentProduct(){
         $PaymentProducts = PaymentProduct::all();
         return Excel::download(new PaymentProductExport($PaymentProducts), 'payment_of_products.xlsx');
-    }
-    public function expor(){
         $productchannels = ProductChannel::all();
         return Excel::download(new ProductChannelExport($productchannels), 'channel_of_products.xlsx');
+    }
+    public function import_product(Request $request){
+      
+        // $request->validate([
+        //     'file' => 'required|mimes:xlsx,xls',
+        // ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new ProductImport, $filePath);        
+          
+        }  
+    }
+    public function import_payment_product(Request $request){
+      
+        // $request->validate([
+        //     'file' => 'required|mimes:xlsx,xls',
+        // ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new PaymentProductImport, $filePath);        
+          
+        }  
+    }
+    public function import_product_channel(Request $request){
+      
+        // $request->validate([
+        //     'file' => 'required|mimes:xlsx,xls',
+        // ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new ProductChannelImport, $filePath);        
+          
+        }  
     }
 }

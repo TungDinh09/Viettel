@@ -140,4 +140,5 @@ class BlogController extends Controller
         $blog = Blog::all();
         return Excel::download(new BlogExport($blog), 'blogs.xlsx');
     }
+    
 }

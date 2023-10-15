@@ -2,13 +2,14 @@
 
 namespace App\Imports;
 
-use App\Models\District;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use App\Models\ProductChannel;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Models\Payment;
 
-class DistrictImport implements ToModel,WithHeadingRow
+
+class ProductChannelImport implements ToModel,WithHeadingRow
 {
     /**
     * @param Collection $collection
@@ -28,11 +29,11 @@ class DistrictImport implements ToModel,WithHeadingRow
     */
     public function model(array $row)
     {
-        return new District([
+        return new ProductChannel([
             //
-            'DistrictID '=> $row['districtid'],
-            'DistrictName' => $row['districtname'],
-            'CityID' => $row['cityid'],
+            'ProductChannelID'=> $row['productchannelid'],
+            'ChannelID' => $row['channelid'],
+            'ProductID' => $row['productid'],
 
         ]);
     }

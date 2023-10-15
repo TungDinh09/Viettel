@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Exports\CategoryExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CategoryImport;
+
 
 
 class CategoryController extends Controller
@@ -24,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -97,7 +99,7 @@ class CategoryController extends Controller
         // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
         return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
     }
-        
+
     }
 
     /**
@@ -133,5 +135,23 @@ class CategoryController extends Controller
         $categories = Category::all();
         return Excel::download(new CategoryExport($categories), 'categories.xlsx');
     }
+    public function import(Request $request)
+    {
+        // $request->validate([
+        //     'file' => 'required|mimes:xlsx,xls',
+        // ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new CategoryImport, $filePath);        
+        }
+        
+
+        
+    }
     
+
 }
