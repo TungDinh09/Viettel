@@ -3,13 +3,19 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Carousel from "react-bootstrap/Carousel";
 
+import Carousel from "react-bootstrap/Carousel";
+import Product from "../ReactViews/Components/Product";
 import "./assets/CSS/product.css";
 
 
 function Home() {
+  const products = [
+    {title:"product title1",description:"description1"},
+    {title:"product title2",description:"description2"},
+    {title:"product title3",description:"description3"},
+    {title:"product title4",description:"description4"},
+  ]
   return (
     <div className="bg-red">
    <Header/>
@@ -55,70 +61,12 @@ function Home() {
 </Carousel>
       <Container fluid="md p-4 ">
         <Row>
+
           {/* Mobile-first design: Full width on small screens */}
-          <Col xs={12} sm={6} md={6} lg={3} className="p-3 my-3">
-            <Card className="product-card-img position-relative">
-              {/* Card content */}
-                  <Card.Title className="text-light text-center uppercase position-absolute product-name w-100 py-1">Card Title</Card.Title>
-              <Card.Body className="justify-content-center align-items-center d-flex flex-column">
-       
-       <Card.Text className="text-light text-center">
-         Some quick example text to build on the card title and make up the
-         bulk of the card's content.
-
-       </Card.Text>
-       <Button  className="mx-auto text-dark button-62 mt-2 ">Chi tiết</Button>
-     </Card.Body>
-            </Card>
-          </Col>
-
-          <Col xs={12} sm={6} md={6} lg={3} className="p-3 my-3">
-            <Card className="product-card-img position-relative">
-              {/* Card content */}
-                  <Card.Title className="text-light text-center uppercase position-absolute product-name w-100 py-1">Card Title</Card.Title>
-              <Card.Body className="justify-content-center align-items-center d-flex flex-column">
-       
-       <Card.Text className="text-light text-center">
-         Some quick example text to build on the card title and make up the
-         bulk of the card's content.
-
-       </Card.Text>
-       <Button  className="mx-auto text-dark button-62 mt-2 ">Chi tiết</Button>
-     </Card.Body>
-            </Card>
-          </Col>
-
-          <Col xs={12} sm={6} md={6} lg={3} className="p-3 my-3">
-            <Card className="product-card-img position-relative">
-              {/* Card content */}
-                  <Card.Title className="text-dark text-center uppercase position-absolute product-name w-100 py-1">Card Title</Card.Title>
-              <Card.Body className="justify-content-center align-items-center d-flex flex-column">
-       
-       <Card.Text className="text-light text-center">
-         Some quick example text to build on the card title and make up the
-         bulk of the card's content.
-
-       </Card.Text>
-       <Button  className="mx-auto text-dark button-62 mt-2 ">Chi tiết</Button>
-     </Card.Body>
-            </Card>
-          </Col>
-
-          <Col xs={12} sm={6} md={6} lg={3} className="p-3 my-3">
-            <Card className="product-card-img position-relative">
-              {/* Card content */}
-                  <Card.Title className="text-light text-center uppercase position-absolute product-name w-100 py-1">Card Title</Card.Title>
-              <Card.Body className="justify-content-center align-items-center d-flex flex-column">
-       
-       <Card.Text className="text-light text-center">
-         Some quick example text to build on the card title and make up the
-         bulk of the card's content.
-
-       </Card.Text>
-       <Button  className="mx-auto text-dark button-62 mt-2 ">Chi tiết</Button>
-     </Card.Body>
-            </Card>
-          </Col>
+          {products.map((item)=>(
+           <Col xs={12} sm={6} md={6} lg={3} className="p-3 my-3">
+            <Product title={item.title} description={item.description}/>
+          </Col>))}
         </Row>
       </Container>
 

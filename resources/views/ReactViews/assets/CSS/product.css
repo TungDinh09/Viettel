@@ -4,7 +4,7 @@
     background-repeat: no-repeat;
     background-position: center;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    height: 24rem;
+    height: 24rem !important;
     transition-duration: 0.4s;
 }
 .product-card-img:hover{
