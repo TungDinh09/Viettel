@@ -7,15 +7,18 @@ import Button from "react-bootstrap/Button";
 import Carousel from "react-bootstrap/Carousel";
 import Product from "../ReactViews/Components/Product";
 import "./assets/CSS/product.css";
+import { useSelector, useDispatch } from "react-redux";
+import { 
+  decrement,
+  increment,
+  incrementByAmount,
+  incrementAsync,
+  selectCount
+ } from "../../js/features/counter/counterSlice";
 
 
 function Home() {
-  const products = [
-    {title:"product title1",description:"description1"},
-    {title:"product title2",description:"description2"},
-    {title:"product title3",description:"description3"},
-    {title:"product title4",description:"description4"},
-  ]
+  const products = useSelector(selectCount)
   return (
     <div className="bg-red">
    <Header/>

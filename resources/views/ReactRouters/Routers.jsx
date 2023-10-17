@@ -10,8 +10,12 @@ import Sidebar from '../ReactViews/admin/adminheader';
 import Header from '../ReactViews/header';
 import App from '../ReactViews/App';
 import Adminhome from '../ReactViews/admin/admin';
-
+import Post from '../ReactViews/Components/Post';
 const router = createBrowserRouter([
+    {
+        path: "/test",
+        element: <Post/>,
+    },
     {
         path: "/",
         element: <Home/>,
