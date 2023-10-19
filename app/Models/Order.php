@@ -17,6 +17,9 @@ class Order extends Model
         'name',
         'Phone',
         'email',
+        'CityID',
+        'DistrictID',
+        'Address',
         'DateStart',
         'ServicePrice',
         'UserID',
@@ -31,7 +34,14 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'UserID', 'UserID');
     }
-
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'CityID', 'CityID');
+    }
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'DistrictID', 'DistrictID');
+    }
     public function payment()
     {
         return $this->belongsTo(Payment::class, 'PaymentID', 'PaymentID');

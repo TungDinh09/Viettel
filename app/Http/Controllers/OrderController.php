@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\User;
 use App\Exports\OrderBackUpExport;
 use App\Exports\OrderExport;
 use App\Imports\OrderImport;
@@ -38,11 +39,17 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
+            $userid = Auth::user()->UserID;
             $productID = $request->productID;
             $order = new Order;
             $order->ProductPrice = Product::find($productID)->select('Price');
             $order->ProductID = $productID;
-            $order->User = Auth::user()->UserID;
+            $order->Phone = User::find($userid)->select('Phone');
+            $order->email = User::find($userid)->select('email');
+            $order->CityID = User::find($userid)->select('CityID');
+            $order->DistrictID= User::find($userid)->select('DistrictID');
+            $order->Address = User::find($userid)->select('Address');
+            $order->UserID = $userid;
             $order->Accept = FALSE;
             $order->DateStart = now();
             $paymentID = $request->PaymentID;
@@ -111,6 +118,8 @@ class OrderController extends Controller
         $order = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
     ->leftJoin('payments', 'orders.PaymentID', '=', 'payments.PaymentID')
     ->leftJoin('services', 'orders.ServiceID', '=', 'services.ServiceID')
+    ->leftJoin('cities', 'orders.CityID', '=', 'cities.CityID')
+    ->leftJoin('districts', 'orders.DistrictID', '=', 'districts.DistrictID')
     ->select([
         'OrderID',
         'ProductPrice',
@@ -118,6 +127,9 @@ class OrderController extends Controller
         'name',
         'Phone',
         'email',
+        'CityName',
+        'DistrictName',
+        'Addess',
         'DateStart',
         'ServicePrice',
         'UserID',
@@ -161,5 +173,47 @@ class OrderController extends Controller
             Excel::import(new OrderImport, $filePath);        
           
         }
+    }
+    public function OrderForm(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $userid = Auth::user()->UserID;
+            $productID = $request->productID;
+            $order = new Order;
+            $order->ProductPrice = Product::find($productID)->select('Price');
+            $order->ProductID = $productID;
+            $order->Phone = $request->Phone;
+            $order->email = $request->email;
+            $order->CityID = $request->CityID;
+            $order->DistrictID= $request->DistrictID;
+            $order->Address = $request->Address;
+            $order->Accept = FALSE;
+            $order->DateStart = now();
+            $paymentID = $request->PaymentID;
+            
+            if ($paymentID !== null) {
+                $order->PaymentID = $paymentID;
+            } else {
+                $order->PaymentID = null;
+            }
+            
+            $ServiceID = $request->ServiceID;
+            
+            if ($ServiceID !== null) {
+                $order->ServiceID = $ServiceID;
+                $order->ServicePrice = Service::find($ServiceID)->select('Price');
+            } else {
+                $order->ServiceID = null;
+            }
+
+            $order->save();
+
+            DB::commit(); // Commit the transaction if everything is successful
+        } catch (\Exception $e) {
+            DB::rollback(); // Rollback the transaction if an error occurs
+            // Handle the error, log it, or return an error response
+        }
+        
     }
 }
