@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UsersImport implements ToModel,WithHeadingRow
+class UserImport implements ToModel,WithHeadingRow
 {
     /**
     * @param Collection $collection

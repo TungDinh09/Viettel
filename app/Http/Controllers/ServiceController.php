@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ServiceExport;
+use App\Imports\ServiceImport;
 use Illuminate\Support\Facades\DB;
 class ServiceController extends Controller
 {
@@ -131,5 +132,15 @@ class ServiceController extends Controller
     public function export(){
         $services = Service::all();
         return Excel::download(new ServiceExport($services), 'services.xlsx');
+    }
+    public function import(Request $request){
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new ServiceImport, $filePath);        
+          
+        }
     }
 }

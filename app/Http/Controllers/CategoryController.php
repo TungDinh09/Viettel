@@ -136,14 +136,22 @@ class CategoryController extends Controller
         return Excel::download(new CategoryExport($categories), 'categories.xlsx');
     }
     public function import(Request $request)
-{
-    // $request->validate([
-    //     'file' => 'required|mimes:xlsx,xls',
-    // ]);
+    {
+        // $request->validate([
+        //     'file' => 'required|mimes:xlsx,xls',
+        // ]);
 
-    Excel::import(new CategoryImport, $request->file('file'));
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
 
-    return redirect('/import')->with('success', 'Excel file imported successfully.');
-}
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new CategoryImport, $filePath);        
+        }
+        
+
+        
+    }
+    
 
 }

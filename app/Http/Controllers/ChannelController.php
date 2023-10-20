@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Channel;
 use Illuminate\Http\Request;
+use App\Exports\ChannelExport;
+use App\Imports\ChannelImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 class ChannelController extends Controller
 {
@@ -126,5 +129,25 @@ class ChannelController extends Controller
         return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
     }
     }
-    
+    public function export(){
+        $categories = Channel::all();
+        return Excel::download(new ChannelExport($categories), 'channels.xlsx');
+    }
+    public function import(Request $request)
+    {
+        // $request->validate([
+        //     'file' => 'required|mimes:xlsx,xls',
+        // ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new ChannelImport, $filePath);         
+        }
+        
+
+        
+    }
 }

@@ -14,9 +14,9 @@ use App\Http\Controllers\Admin\AdminController;
 |
 */
 
-// Route::get('/{any}', function () {
-//     return view('welcome');
-// })->where('any', '.*');
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');
 
 Route::get('/city_export', [CityController::class, 'export']);
 Route::get('/import', [CityController::class, 'showForm']);

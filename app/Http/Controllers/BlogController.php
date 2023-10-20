@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use Illuminate\Support\Facades\DB;
+use App\Exports\BlogExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class BlogController extends Controller
 {
     /**
@@ -133,4 +136,9 @@ class BlogController extends Controller
             return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
         }
     }
+    public function export(){
+        $blog = Blog::all();
+        return Excel::download(new BlogExport($blog), 'blogs.xlsx');
+    }
+    
 }

@@ -2,14 +2,13 @@
 
 namespace App\Exports;
 
-use App\Models\Order;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-
-class OrderBackUpExport implements FromArray, WithHeadings, WithMapping
+class UserExport implements FromArray, WithHeadings, WithMapping
 {
     protected $data;
     public function __construct($data)
@@ -29,21 +28,22 @@ class OrderBackUpExport implements FromArray, WithHeadings, WithMapping
      */
     public function headings(): array{
         return [
-            'OrderID',
-            'ProductPrice',
-            'Accept',
+            'UserID',
             'name',
-            'Phone',
             'email',
+            'password',
+            'Phone',
+            'Avatar',
+            'Gender',
+            'Address',
+            'DateOfBirth',
+            'FirstName',
+            'LastName',
             'CityID',
             'DistrictID',
-            'Address',
-            'DateStart',
-            'ServicePrice',
-            'UserID',
-            'PaymentID',
-            'ProductID',
-            'ServiceID',
+            'email_verified_at',
+            'rememberToken',
+            'timestamps',
         ];
     }
     /**
@@ -58,21 +58,22 @@ class OrderBackUpExport implements FromArray, WithHeadings, WithMapping
      */
     public function map($row): array{
         return [
-            $row['OrderID'],
-            $row['ProductPrice'],
-            $row['Accept'],
-            $row['name'],
-            $row['Phone'],
-            $row['email'],
-            $row['CityID'],
-            $row['DistrictID'],
-            $row['Address'],
-            $row['DateStart'],
-            $row['ServicePrice'],
             $row['UserID'],
-            $row['PaymentID'],
-            $row['ProductID'],
-            $row['ServiceID'],
+            $row[ 'name'],
+            $row['email'],
+            $row['password'],
+            $row['Phone'],
+            $row['Avatar'],
+            $row['Gender'],
+            $row['Address'],
+            $row['DateOfBirth'],
+            $row['FirstName'],
+            $row['LastName'],
+            $row['CityID'],
+            $row[ 'DistrictID'],
+            $row['email_verified_at'],
+            $row['rememberToken'],
+            $row[ 'timestamps'],
         ];
     }
 }

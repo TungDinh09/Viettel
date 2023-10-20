@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PaymentExport;
+use App\Imports\PaymentImport;
 
 class PaymentController extends Controller
 {
@@ -134,5 +135,13 @@ class PaymentController extends Controller
     public function export(){
         $payments = Payment::all();
         return Excel::download(new PaymentExport($payments), 'payments.xlsx');
+    }
+    public function import(Request $request){
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new PaymentImport, $filePath);
+        }
     }
 }
