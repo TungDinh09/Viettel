@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\CityController;
+use App\Http\Controllers\Admin\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,8 @@ Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
 
-// Route::get('/city_export', [CityController::class, 'export']);
-// Route::get('/import', [CityController::class, 'showForm']);
-// Route::post('/import', [CityController::class, 'import']);
+Route::get('/city_export', [CityController::class, 'export']);
+Route::get('/import', [CityController::class, 'showForm']);
+Route::post('/import', [CityController::class, 'import']);
+Route::get('/login', [AdminController::class, 'login']);
+Route::post("/login-admin",[AdminController::class,'loginUser']);

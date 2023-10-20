@@ -25,7 +25,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -164,7 +164,33 @@ class AdminController extends Controller
         // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
         return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
     }
-        
+
+    }
+    public function login(){
+        return view("login");
+    }
+    public function loginUser(Request $request){
+        $request->validate([
+            'email'=>'required|email',
+            'password'=>'required|min:5',
+        ]);
+        // $admin = Admin::where(function ($query) use ($request){
+        //     $query->where('email', $request->input('identity'))
+        //     ->orWhere('phone', $request->input('identity'));
+        // })->first();
+        $admin = Admin::where('email','=',$request->email)->first();
+        if($admin){
+            if(Hash::check($request->password, $admin->password)){
+                $request->session()->put('user',$admin->id);
+                return redirect('/');
+            }else{
+                return back()->with('fail',"password not matches");
+            }
+        }else{
+            return back()->with('fail',"this email is not registered");
+        }
+
+
     }
     public function export(){
         $admin = Admin::all();
