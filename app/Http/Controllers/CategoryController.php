@@ -18,7 +18,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return response()->json($categories, 200);
     }
 
     /**
@@ -146,12 +147,12 @@ class CategoryController extends Controller
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new CategoryImport, $filePath);        
+            Excel::import(new CategoryImport, $filePath);
         }
-        
 
-        
+
+
     }
-    
+
 
 }

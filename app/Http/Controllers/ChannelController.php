@@ -15,7 +15,8 @@ class ChannelController extends Controller
      */
     public function index()
     {
-        //
+        $channel = Channel::all();
+        return response()->json($channel, 200);
     }
 
     /**
@@ -144,10 +145,10 @@ class ChannelController extends Controller
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new ChannelImport, $filePath);         
+            Excel::import(new ChannelImport, $filePath);
         }
-        
 
-        
+
+
     }
 }

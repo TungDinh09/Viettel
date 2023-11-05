@@ -14,16 +14,17 @@ class DistrictController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($city_id)
     {
-        //
+        $district = District::all()->where("CityID",1);
+        return response()->json($district, 200);
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create(){
-    
+
         //
     }
 
@@ -112,7 +113,7 @@ class DistrictController extends Controller
         $district = District::find($id);
 
         if (!$district) {
-            DB::rollback(); // Rollback transaction nếu quận huyện không tồn tại
+            DB::rollback(); // Rollback timportransaction nếu quận huyện không tồn tại
             return response()->json(['message' => 'District not found'], 404);
         }
 
@@ -147,7 +148,7 @@ class DistrictController extends Controller
 
             // Thực hiện xử lý khác (nếu cần)
 
-            
+
         }
         // chua code route
     }

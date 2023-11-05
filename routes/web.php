@@ -17,9 +17,9 @@ use App\Http\Controllers\Admin\AdminController;
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
-
+Route::get('city/all',[CityController::class,'index']);
 Route::get('/city_export', [CityController::class, 'export']);
-Route::get('/import', [CityController::class, 'showForm']);
-Route::post('/import', [CityController::class, 'import']);
+Route::get('/import', [CityController::class, 'import']);
 Route::get('/login', [AdminController::class, 'login']);
 Route::post("/login-admin",[AdminController::class,'loginUser']);
+
