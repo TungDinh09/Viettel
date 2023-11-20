@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AdminExport;
+use App\Imports\AdminImport;
 
 class AdminController extends Controller
 {
@@ -35,40 +36,40 @@ class AdminController extends Controller
     {
         DB::beginTransaction();
 
-    try {
-        $admin = new Admin();
-        $dateofbirth = $request->Year . "/" . $request->Month . "/" . $request->Day;
-        $admin->FirstName = $request->FirstName;
-        $admin->LastName = $request->LastName;
-        $admin->name = $request->name;
-        $admin->email = $request->email;
-        $admin->Phone = $request->Phone;
-        $admin->Gender = $request->Gender;
-        $admin->password = Hash::make($request->password);
-        $admin->Address = $request->Address;
-        $admin->DateOfBirth = $dateofbirth;
+        try {
+            $admin = new Admin();
+            $dateofbirth = $request->Year . "/" . $request->Month . "/" . $request->Day;
+            $admin->FirstName = $request->FirstName;
+            $admin->LastName = $request->LastName;
+            $admin->name = $request->name;
+            $admin->email = $request->email;
+            $admin->Phone = $request->Phone;
+            $admin->Gender = $request->Gender;
+            $admin->password = Hash::make($request->password);
+            $admin->Address = $request->Address;
+            $admin->DateOfBirth = $dateofbirth;
 
-        // Kiểm tra xem có tải lên hình ảnh (Avatar) hay không
-        if ($request->hasFile('Avatar')) {
-            $avatarPath = $request->file('Avatar')->store('avatars', 'public');
-            $admin->Avatar = $avatarPath;
-        } else {
-            $admin->Avatar = null;
+            // Kiểm tra xem có tải lên hình ảnh (Avatar) hay không
+            if ($request->hasFile('Avatar')) {
+                $avatarPath = $request->file('Avatar')->store('avatars', 'public');
+                $admin->Avatar = $avatarPath;
+            } else {
+                $admin->Avatar = null;
+            }
+
+            $admin->save();
+
+            // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+            DB::commit();
+
+            return "Insert thành công";
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+            DB::rollback();
+
+            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+            return "Insert thất bại: " . $e->getMessage();
         }
-
-        $admin->save();
-
-        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
-        DB::commit();
-
-        return "Insert thành công";
-    } catch (\Exception $e) {
-        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
-        DB::rollback();
-
-        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
-        return "Insert thất bại: " . $e->getMessage();
-    }
     }
 
     /**
@@ -181,7 +182,7 @@ class AdminController extends Controller
         $admin = Admin::where('email','=',$request->email)->first();
         if($admin){
             if(Hash::check($request->password, $admin->password)){
-                $request->session()->put('user',$admin->id);
+                $request->session()->put('admin',$admin->id);
                 return redirect('/');
             }else{
                 return back()->with('fail',"password not matches");
@@ -195,5 +196,14 @@ class AdminController extends Controller
     public function export(){
         $admin = Admin::all();
         return Excel::download(new AdminExport($admin), 'admins.xlsx');
+    }
+    public function import(){
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+            $filePath = $file->getRealPath();
+            Excel::import(new AdminImport, $filePath);
+        }
     }
 }

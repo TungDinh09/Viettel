@@ -23,7 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('CategoryID');
             $table->unsignedBigInteger('ServiceID')->nullable();
             $table->timestamps();
-
             $table->foreign('CategoryID')->references('CategoryID')->on('categories');
             $table->foreign('ServiceID')->references('ServiceID')->on('services');
         });

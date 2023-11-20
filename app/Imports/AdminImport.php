@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UserImport implements ToModel,WithHeadingRow
+class AdminImport implements ToModel
 {
     /**
     * @param Collection $collection
@@ -41,8 +41,6 @@ class UserImport implements ToModel,WithHeadingRow
             'DateOfBirth' => $row['dateofbirth'],
             'FirstName' => $row['firstname'],
             'LastName' => $row['lastname'],
-            'CityID' => $row['cityid'],
-            'DistrictID' => $row['districtid'],
         ]);
     }
 }

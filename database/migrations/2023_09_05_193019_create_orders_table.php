@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('ProductID');
             $table->unsignedBigInteger('ServiceID')->nullable();
             $table->timestamps();
-            $table->foreign('UserID')->references('UserID')->on('users');
+            $table->foreign('UserID')->references('id')->on('users');
             $table->foreign('DistrictID')->references('DistrictID')->on('districts');
             $table->foreign('CityID')->references('CityID')->on('cities');
             $table->foreign('PaymentID')->references('PaymentID')->on('payments');

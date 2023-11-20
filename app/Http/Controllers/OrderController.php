@@ -39,7 +39,7 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            $userid = Auth::user()->UserID;
+            $userid = Auth::user()->id;
             $productID = $request->productID;
             $order = new Order;
             $order->ProductPrice = Product::find($productID)->select('Price');
@@ -178,7 +178,7 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            $userid = Auth::user()->UserID;
+            $userid = Auth::user()->id;
             $productID = $request->productID;
             $order = new Order;
             $order->ProductPrice = Product::find($productID)->select('Price');

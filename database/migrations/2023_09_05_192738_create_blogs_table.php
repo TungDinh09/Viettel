@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('AdminID');
             $table->timestamps();
 
-            $table->foreign('AdminID')->references('AdminID')->on('admins');
+            $table->foreign('AdminID')->references('id')->on('admins');
         });
     }
 

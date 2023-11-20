@@ -28,7 +28,7 @@ class UserExport implements FromArray, WithHeadings, WithMapping
      */
     public function headings(): array{
         return [
-            'UserID',
+            'id',
             'name',
             'email',
             'password',
@@ -58,7 +58,7 @@ class UserExport implements FromArray, WithHeadings, WithMapping
      */
     public function map($row): array{
         return [
-            $row['UserID'],
+            $row['id'],
             $row[ 'name'],
             $row['email'],
             $row['password'],

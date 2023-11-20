@@ -25,7 +25,7 @@ class AdminExport implements FromArray, WithHeadings, WithMapping
      */
     public function headings(): array{
         return [
-            'AdminID',
+            'id',
             'name',
             'email',
             'password',
@@ -53,7 +53,7 @@ class AdminExport implements FromArray, WithHeadings, WithMapping
      */
     public function map($row): array{
         return [
-            $row['AdminID'],
+            $row['id'],
             $row[ 'name'],
             $row['email'],
             $row['password'],

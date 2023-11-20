@@ -39,7 +39,7 @@ class BlogController extends Controller
         $blog->BlogTitle = $request->BlogTitle;
         // Lưu ý rằng bạn cần gán giá trị của TitleImage từ $request, không phải từ $blog
         $blog->TitleImage = $request->TitleImage;
-        $blog->AdminID = Auth::admin()->AdminID;
+        $blog->AdminID = Auth::admin()->id;
         $blog->save();
 
         // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
@@ -90,7 +90,7 @@ class BlogController extends Controller
         $blog->BlogTitle = $request->BlogTitle;
         // Lưu ý rằng bạn cần gán giá trị của TitleImage từ $request, không phải từ $blog
         $blog->TitleImage = $request->TitleImage;
-        $blog->AdminID = Auth::admin()->AdminID;
+        $blog->AdminID = Auth::admin()->id;
         $blog->save();
 
         // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
