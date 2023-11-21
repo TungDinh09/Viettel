@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name', 225)->unique();
             $table->string('email', 225)->unique();
             $table->string('password', 225);
-            $table->char('Phone', 11);
+            $table->char('Phone', 225);
             $table->string('Avatar', 225)->nullable();
             $table->char('Gender', 1);
             $table->string('Address', 225);
