@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PaymentExport;
 use App\Imports\PaymentImport;
 
+
 class PaymentController extends Controller
 {
     /**
@@ -16,7 +17,10 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Payment::all();
+
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        return response()->json(['payments' => $payments]);
     }
 
     /**

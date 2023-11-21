@@ -16,7 +16,10 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        //
+        $districts = District::all();
+
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        return response()->json(['districts' => $districts]);
     }
 
     /**

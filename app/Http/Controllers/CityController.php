@@ -17,7 +17,10 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        $cities = City::all();
+
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        return response()->json(['cities' => $cities]);
     }
 
     /**
