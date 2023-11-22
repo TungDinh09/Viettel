@@ -1,12 +1,12 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\User;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Channel;
 
-class UserSeeder extends Seeder
+class ChannelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
-        User::factory()->count(1000)->create();
+        Channel::factory()->count(10)->create();
     }
 }

@@ -31,6 +31,10 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'BlogContent'=>'required',
+            'BlogTitle'=>'required'
+        ]);
          DB::beginTransaction();
 
     try {
@@ -108,7 +112,7 @@ class BlogController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * 
+     *
      */
     public function destroy($id)
     {
@@ -140,5 +144,5 @@ class BlogController extends Controller
         $blog = Blog::all();
         return Excel::download(new BlogExport($blog), 'blogs.xlsx');
     }
-    
+
 }

@@ -32,7 +32,10 @@ class ChannelController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-
+        $request->validate([
+            'ChannelName'=>'required|unique:channels',
+            'Price'=>'required'
+        ]);
     try {
         $channel = new Channel();
         $channel->ChannelName = $request->input('ChannelName');
@@ -144,10 +147,10 @@ class ChannelController extends Controller
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new ChannelImport, $filePath);         
+            Excel::import(new ChannelImport, $filePath);
         }
-        
 
-        
+
+
     }
 }
