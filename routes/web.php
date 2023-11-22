@@ -27,6 +27,7 @@ require __DIR__.'/adminauth.php';
 
 //-------------------- get ---------------- 
 Route::get('/product', [ProductController::class, 'index']);
+Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::get('/city', [CityController::class, 'index']);
 Route::get('/district', [DistrictController::class, 'index']);
 Route::get('/payment',[PaymentController::class,'index']);

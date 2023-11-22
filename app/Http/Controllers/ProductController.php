@@ -100,7 +100,12 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        // $productID = '"' + $id + '"';
+        // echo($productID);
+        $product = Product::where('ProductID','=',$id)->get();
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        
+        return response()->json(['product' => $product]);
     }
 
     /**
