@@ -36,6 +36,10 @@ class CategoryController extends Controller
     {
          DB::beginTransaction();
 
+         $request->validate([
+            'CategoryName'=>'required',
+
+        ]);
     try {
         $category = new Category();
         $category->CategoryName = $request->input('CategoryName');
@@ -146,12 +150,12 @@ class CategoryController extends Controller
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new CategoryImport, $filePath);        
+            Excel::import(new CategoryImport, $filePath);
         }
-        
 
-        
+
+
     }
-    
+
 
 }

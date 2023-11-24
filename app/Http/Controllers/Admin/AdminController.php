@@ -36,6 +36,14 @@ class AdminController extends Controller
     {
         DB::beginTransaction();
 
+        $request->validate([
+            'name'=>'required',
+            'email'=>'required|unique:admins',
+            'Phone'=>'required|unique:admins',
+            'Gender'=>'required',
+            'password'=>'required',
+            'dateOfBirth'=>'required',
+        ]);
         try {
             $admin = new Admin();
             $dateofbirth = $request->Year . "/" . $request->Month . "/" . $request->Day;

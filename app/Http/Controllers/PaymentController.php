@@ -38,6 +38,7 @@ class PaymentController extends Controller
     {
         DB::beginTransaction();
 
+        
     try {
         $payment = new Payment();
         $payment->PaymentName = $request->input('PaymentName');

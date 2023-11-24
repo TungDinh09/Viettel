@@ -22,11 +22,20 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call([
+            CitiesTableSeeder::class,
+            DistrictsTableSeeder::class,
+            AdminSeeder::class,
+            BlogSeeder::class,
+            ChannelSeeder::class,
+            ServiceSeeder::class,
+            UserSeeder::class
+        ]);
 
-        Blog::factory()->count(10)->create();
-        Admin::factory()->count(10)->create();
-        // DB::table('cities')->insert($cities);
-        // DB::table('districts')->insert($districts);
-        User::factory()->count(10)->create();
+        // Blog::factory()->count(10)->create();
+        // Admin::factory()->count(10)->create();
+        // // DB::table('cities')->insert($cities);
+        // // DB::table('districts')->insert($districts);
+        // User::factory()->count(10)->create();
     }
 }

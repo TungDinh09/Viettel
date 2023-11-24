@@ -32,6 +32,10 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
+        $request->validate([
+            'ServiceName'=>'required',
+            'Price'=>'required'
+        ]);
 
     try {
         $service = new Service();
@@ -139,8 +143,8 @@ class ServiceController extends Controller
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new ServiceImport, $filePath);        
-          
+            Excel::import(new ServiceImport, $filePath);
+
         }
     }
 }

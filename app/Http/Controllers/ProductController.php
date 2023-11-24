@@ -44,6 +44,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
+        $request->validate([
+            'Speed'=>'required',
+            'Bandwidth'=>'required',
+            'IPstatic'=>'required',
+            'UseDay'=>'required',
+            'CategoryID'=>'required',
+        ]);
 
         try {
             $product = [
@@ -104,7 +111,7 @@ class ProductController extends Controller
         // echo($productID);
         $product = Product::where('ProductID','=',$id)->get();
         // Trả về dữ liệu sản phẩm dưới dạng JSON
-        
+
         return response()->json(['product' => $product]);
     }
 
@@ -119,7 +126,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    
+
 public function update(Request $request, $id)
 {
     // Validate input data
@@ -237,7 +244,7 @@ public function update(Request $request, $id)
         return Excel::download(new ProductChannelExport($productchannels), 'channel_of_products.xlsx');
     }
     public function import_product(Request $request){
-      
+
         // $request->validate([
         //     'file' => 'required|mimes:xlsx,xls',
         // ]);
@@ -247,12 +254,12 @@ public function update(Request $request, $id)
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new ProductImport, $filePath);        
-          
-        }  
+            Excel::import(new ProductImport, $filePath);
+
+        }
     }
     public function import_payment_product(Request $request){
-      
+
         // $request->validate([
         //     'file' => 'required|mimes:xlsx,xls',
         // ]);
@@ -262,12 +269,12 @@ public function update(Request $request, $id)
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new PaymentProductImport, $filePath);        
-          
-        }  
+            Excel::import(new PaymentProductImport, $filePath);
+
+        }
     }
     public function import_product_channel(Request $request){
-      
+
         // $request->validate([
         //     'file' => 'required|mimes:xlsx,xls',
         // ]);
@@ -277,8 +284,8 @@ public function update(Request $request, $id)
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
-            Excel::import(new ProductChannelImport, $filePath);        
-          
-        }  
+            Excel::import(new ProductChannelImport, $filePath);
+
+        }
     }
 }
