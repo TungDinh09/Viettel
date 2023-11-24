@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('category','service')->get();
 
         // Trả về dữ liệu sản phẩm dưới dạng JSON
         return response()->json(['products' => $products]);
