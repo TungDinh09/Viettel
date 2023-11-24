@@ -8,6 +8,10 @@ use App\Http\Controllers\AdminAuth\RegisteredUserController;
 use App\Http\Controllers\AdminAuth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::post('/admin/register', [RegisteredUserController::class, 'store'])
+                ->middleware('guest')
+                ->name('register');
 Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])
                 ->middleware('guest:admin')
                 ->name('login');

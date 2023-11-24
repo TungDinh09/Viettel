@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('Avatar', 225)->nullable();
             $table->char('Gender', 1);
             $table->string('Address', 225);
-            $table->date('DateOfBirth');
-            $table->string('Firstname', 225);
-            $table->string('LastName', 225);
+            $table->date('DateOfBirth')->nullable();
+            $table->string('Firstname', 225)->nullable();
+            $table->string('LastName', 225)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

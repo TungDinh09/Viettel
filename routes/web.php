@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,14 +17,14 @@ use App\Http\Controllers\PaymentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
-
-
-require __DIR__.'/auth.php';
 require __DIR__.'/adminauth.php';
+
+
 
 //-------------------- get ---------------- 
 Route::get('/product', [ProductController::class, 'index']);
