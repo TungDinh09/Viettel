@@ -23,7 +23,7 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 require __DIR__.'/adminauth.php';
-
+require __DIR__.'/apirouter.php';
 
 
 //-------------------- get ---------------- 
