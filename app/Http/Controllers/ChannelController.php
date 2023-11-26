@@ -85,7 +85,10 @@ class ChannelController extends Controller
             DB::rollback(); // Rollback transaction nếu kênh không tồn tại
             return response()->json(['message' => 'Channel not found'], 404);
         }
-
+        $request->validate([
+            'ChannelName'=>'required|unique:channels',
+            'Price'=>'required'
+        ]);
         $channel->ChannelName = $request->input('ChannelName');
         $channel->Price = $request->input('Price');
         $channel->save();

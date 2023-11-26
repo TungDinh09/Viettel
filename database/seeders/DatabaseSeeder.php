@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
             ChannelSeeder::class,
             ServiceSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            ProductSeeder::class
         ]);
 
         // Blog::factory()->count(10)->create();

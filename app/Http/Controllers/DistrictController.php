@@ -26,7 +26,7 @@ class DistrictController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(){
-    
+
         //
     }
 
@@ -38,6 +38,10 @@ class DistrictController extends Controller
         DB::beginTransaction();
 
     try {
+        $request->validate([
+            'DistrictName'=>'required|unique:Channels',
+            'CityID'=> 'required'
+        ]);
         $district = new District();
         $district->DistrictName = $request->input('DistrictName');
         $district->CityID = $request->input('CityID');
@@ -150,7 +154,7 @@ class DistrictController extends Controller
 
             // Thực hiện xử lý khác (nếu cần)
 
-            
+
         }
         // chua code route
     }
