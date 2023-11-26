@@ -88,6 +88,10 @@ class CategoryController extends Controller
             DB::rollback(); // Rollback transaction nếu danh mục không tồn tại
             return response()->json(['message' => 'Category not found'], 404);
         }
+        $request->validate([
+            'CategoryName'=>'required',
+
+        ]);
 
         $category->CategoryName = $request->input('CategoryName');
         $category->save();

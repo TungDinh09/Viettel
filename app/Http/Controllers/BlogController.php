@@ -89,6 +89,10 @@ class BlogController extends Controller
             DB::rollback(); // Rollback transaction nếu bài viết không tồn tại
             return response()->json(['message' => 'Blog not found'], 404);
         }
+        $request->validate([
+            'BlogContent'=>'required',
+            'BlogTitle'=>'required'
+        ]);
 
         $blog->BlogContent = $request->BlogContent;
         $blog->BlogTitle = $request->BlogTitle;

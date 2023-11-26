@@ -39,6 +39,10 @@ class CityController extends Controller
         DB::beginTransaction();
 
     try {
+        $request->validate([
+            'CityName'=>'required|unique:City',
+
+        ]);
         $city = new City();
         $city->CityName = $request->input('CityName');
         $city->save();
@@ -149,7 +153,7 @@ class CityController extends Controller
 
             // Thực hiện xử lý khác (nếu cần)
 
-            
+
         }
         // chua code route
     }
