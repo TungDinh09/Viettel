@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BlogController;
@@ -28,7 +29,6 @@ Route::get('/', function () {
 });
 require __DIR__.'/adminauth.php';
 require __DIR__.'/apirouter.php';
-
 
 //-------------------- get ----------------
 // Route::get('/product', [ProductController::class, 'index']);
@@ -261,4 +261,4 @@ Route::delete('/services/delete/{id}', [ServiceController::class, 'destroy']);
 Route::get('/services/export', [ServiceController::class, 'export']);
 
 // Import services from Excel
-Route::post('/services/import', [ServiceController::class, 'import']);
+
