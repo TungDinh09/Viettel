@@ -18,7 +18,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        return response()->json(['categories' => $categories]);
     }
 
     /**
