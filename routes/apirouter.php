@@ -49,9 +49,11 @@ Route::post('/Channel/create', [ChannelController::class,"store"]);
 Route::PATCH('/Channel/update/{id}', [ChannelController::class,"update"]);
 Route::delete('/Channel/destroy/{id}', [ChannelController::class,"destroy"]);
 
-// Route::post('/Blog/create', [BlogController::class,"store"]);
-// Route::PATCH('/Blog/update/{id}', [BlogController::class,"update"]);
-// Route::delete('/Blog/destroy/{id}', [BlogController::class,"destroy"]);
+Route::post('/Blog/create', [BlogController::class,"store"]);
+Route::PATCH('/Blog/update/{id}', [BlogController::class,"update"]);
+Route::delete('/Blog/destroy/{id}', [BlogController::class,"destroy"]);
+
+
 
 Route::post('/category/create', [CategoryController::class,"store"]);
 Route::PATCH('/category/update/{id}', [CategoryController::class,"update"]);
