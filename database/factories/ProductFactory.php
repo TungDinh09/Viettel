@@ -28,14 +28,8 @@ class ProductFactory extends Factory
             'Description' => $this->faker->sentence,
             'IPstatic' => $this->faker->ipv4,
             'UseDay' => $this->faker->numberBetween(1, 30),
-            'CategoryID' => function () {
-                Category::factory()->create()->id;
-            },
-            'ServiceID' => function () {
-                // Uncomment the following line if you want to create ServiceID relationships
-                Service::factory()->create()->ServiceID;
-
-            },
+            'CategoryID'=> $this->faker->numberBetween(1, 20),
+            'ServiceID' => $this->faker->numberBetween(1, 10),
             'created_at' => now(),
             'updated_at' => now(),
         ];

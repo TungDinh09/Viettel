@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category','service')->get();
+        $products = Product::with('category','service')->paginate(8);
 
         // Trả về dữ liệu sản phẩm dưới dạng JSON
         return response()->json(['products' => $products]);
@@ -287,5 +287,33 @@ public function update(Request $request, $id)
             Excel::import(new ProductChannelImport, $filePath);
 
         }
+        
+    }
+    public function filter(Request $request){
+        $products = Product::with('category','service');
+
+        if($request->input('CategoryID') != null){
+            $products->whereIn('category.CategoryID', $request->input('CategoryID'));
+        }
+        if($request->input('ServiceID') != null){
+            $products->whereIn('service.ServiceID', $request->input('ServiceID'));
+        }
+            
+        if($request->input('sort') == 'A_Z'){
+            $products->orderBy('ProductID');
+        } elseif($request->input('sort') == 'Z_A'){
+            $products->orderByDesc('ProductID');
+        }
+
+        if($request->input('min_Price') != null){
+            $products->where('products.Price','>=' ,$request->input('min_Price'));
+        }
+        if($request->input('max_Price') != null){
+            $products->where('products.Price','<=' ,$request->input('max_Price'));
+        }
+
+        $products = $products->paginate(8);
+
+        return response()->json(['products' => $products]);
     }
 }

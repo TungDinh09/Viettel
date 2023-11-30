@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 
@@ -32,3 +33,4 @@ Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::get('/city', [CityController::class, 'index']);
 Route::get('/district', [DistrictController::class, 'index']);
 Route::get('/payment',[PaymentController::class,'index']);
+Route::get('/category',[CategoryController::class,'index']);
