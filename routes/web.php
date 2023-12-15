@@ -8,9 +8,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,39 +36,10 @@ Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::get('/city', [CityController::class, 'index']);
 Route::get('/district', [DistrictController::class, 'index']);
 Route::get('/payment',[PaymentController::class,'index']);
-
-//blog controller
-Route::get('/blogs', [BlogController::class, 'index']);
-// Route cho hiển thị danh sách danh mục (action index)
-Route::get('/categories', [CategoryController::class, 'index']);
-
-// Route cho hiển thị form tạo mới danh mục (action create)
-
-
-// Route cho hiển thị danh sách kênh (action index)
-Route::get('/channels', [ChannelController::class, 'index']);
-
-// Route cho hiển thị form tạo mới kênh (action create)
-
-// city controller
-
-// Route cho hiển thị danh sách thành phố (action index)
-Route::get('/cities', [CityController::class, 'index']);
-
-// Route cho hiển thị form tạo mới thành phố (action create)
-
-
-// district controller
-Route::get('/districts', [DistrictController::class, 'index']);
-
-//payment controller
-
-// Display all payments
-Route::get('/payments', [PaymentController::class, 'index']);
-
-
-
-// product controller
-//service controller
-
-Route::get('/services', [ServiceController::class, 'index']);
+Route::post('/product/filter',[ProductController::class, 'filter']);
+Route::get('/blog', [BlogController::class, 'index']);
+Route::get('/category', [CategoryController::class, 'index']);
+Route::get('/channel', [ChannelController::class, 'index']);
+Route::get('/service', [ServiceController::class, 'index']);
+Route::post('/order/insert', [OrderController::class, 'store']);
+Route::get('/orders', [OrderController::class, 'index']);

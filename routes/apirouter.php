@@ -41,9 +41,11 @@ Route::post('/Payment/create', [PaymentController::class,"store"]);
 Route::PATCH('/Payment/update/{id}', [PaymentController::class,"update"]);
 Route::delete('/Payment/destroy/{id}', [PaymentController::class,"destroy"]);
 
-Route::post('/Order/create', [OrderController::class,"store"]);
+// Route::post('/Order/create', [OrderController::class,"store"]);
 Route::PATCH('/Order/update/{id}', [OrderController::class,"update"]);
 Route::delete('/Order/destroy/{id}', [OrderController::class,"destroy"]);
+Route::get('/Order/accept/{id}', [OrderController::class,"Accept"]);
+Route::get('/Order/unaccept/{id}', [OrderController::class,"UnAccept"]);
 
 Route::post('/Channel/create', [ChannelController::class,"store"]);
 Route::PATCH('/Channel/update/{id}', [ChannelController::class,"update"]);

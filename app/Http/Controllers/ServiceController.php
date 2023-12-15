@@ -15,7 +15,10 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $services = Service::all();
+
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        return response()->json(['services' => $services]);
     }
 
     /**

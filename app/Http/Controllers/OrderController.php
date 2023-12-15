@@ -20,7 +20,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::with('product','service','payment','district','city')->get();
+
+        // Trả về dữ liệu sản phẩm dưới dạng JSON
+        return response()->json(['orders' => $orders]);
     }
 
     /**
@@ -39,36 +42,38 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            $userid = Auth::user()->id;
-            $productID = $request->productID;
+            
+            
+            $productID = $request->ProductID;
             $order = new Order;
-            $order->ProductPrice = Product::find($productID)->select('Price');
             $order->ProductID = $productID;
-            $order->Phone = User::find($userid)->select('Phone');
-            $order->email = User::find($userid)->select('email');
-            $order->CityID = User::find($userid)->select('CityID');
-            $order->DistrictID= User::find($userid)->select('DistrictID');
-            $order->Address = User::find($userid)->select('Address');
-            $order->UserID = $userid;
+            $order->name = $request->name;
+            $order->Phone = $request->Phone;
+            $order->email = null;
+            $order->CityID = (int)$request->CityID;
+            $order->DistrictID= (int)$request->DistrictID;
+            $order->Address = $request->Address;
             $order->Accept = FALSE;
             $order->DateStart = now();
+            
             $paymentID = $request->PaymentID;
             
             if ($paymentID !== null) {
-                $order->PaymentID = $paymentID;
+                $order->PaymentID = (int)$paymentID;
+                
             } else {
                 $order->PaymentID = null;
             }
             
-            $ServiceID = $request->ServiceID;
-            
-            if ($ServiceID !== null) {
-                $order->ServiceID = $ServiceID;
-                $order->ServicePrice = Service::find($ServiceID)->select('Price');
+            $product = Product::find($productID);   
+            $serviceID = $product->ServiceID;
+            if ($serviceID !== null) {
+                $order->ServiceID = $serviceID;
             } else {
                 $order->ServiceID = null;
             }
 
+            
             $order->save();
 
             DB::commit(); // Commit the transaction if everything is successful
@@ -108,6 +113,50 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
+    }
+    public function Accept(string $id){
+        try {
+        // Start a database transaction
+        DB::beginTransaction();
+
+        // Update the product
+        $order = [
+            'Accept' => True,
+        ];
+
+        Order::where('OrderID', $id)->update($order);
+        
+        // Commit the transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Product updated successfully']);
+        } catch (\Exception $e) {
+            // Something went wrong, rollback the transaction
+            DB::rollBack();
+            return response()->json(['message' => 'Failed to update product', 'error' => $e->getMessage()], 500);
+        }
+    }
+    public function UnAccept(string $id){
+        try {
+        // Start a database transaction
+        DB::beginTransaction();
+
+        // Update the product
+        $order = [
+            'Accept' => FALSE,
+        ];
+
+        Order::where('OrderID', $id)->update($order);
+        
+        // Commit the transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Product updated successfully']);
+        } catch (\Exception $e) {
+            // Something went wrong, rollback the transaction
+            DB::rollBack();
+            return response()->json(['message' => 'Failed to update product', 'error' => $e->getMessage()], 500);
+        }
     }
     
     public function exportBackUp(){
@@ -181,7 +230,6 @@ class OrderController extends Controller
             $userid = Auth::user()->id;
             $productID = $request->productID;
             $order = new Order;
-            $order->ProductPrice = Product::find($productID)->select('Price');
             $order->ProductID = $productID;
             $order->Phone = $request->Phone;
             $order->email = $request->email;
@@ -190,6 +238,8 @@ class OrderController extends Controller
             $order->Address = $request->Address;
             $order->Accept = FALSE;
             $order->DateStart = now();
+
+            
             $paymentID = $request->PaymentID;
             
             if ($paymentID !== null) {
@@ -198,11 +248,10 @@ class OrderController extends Controller
                 $order->PaymentID = null;
             }
             
-            $ServiceID = $request->ServiceID;
+            $ServiceID = Product::find($productID)->select('ServiceID');
             
             if ($ServiceID !== null) {
                 $order->ServiceID = $ServiceID;
-                $order->ServicePrice = Service::find($ServiceID)->select('Price');
             } else {
                 $order->ServiceID = null;
             }
