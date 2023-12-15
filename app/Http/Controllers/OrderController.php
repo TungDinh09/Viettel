@@ -113,6 +113,29 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
+        // Start a database transaction
+        DB::beginTransaction();
+
+        $order = Order::find($id);
+
+        if (!$order) {
+            // Rollback the transaction and return a 404 response
+            DB::rollBack();
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        $order->delete();
+
+        // Commit the transaction
+        DB::commit();
+
+        return response()->json(['message' => 'Product deleted successfully']);
+        } catch (\Exception $e) {
+            // Something went wrong, rollback the transaction
+            DB::rollBack();
+            return response()->json(['message' => 'Failed to delete product', 'error' => $e->getMessage()], 500);
+        }
     }
     public function Accept(string $id){
         try {
