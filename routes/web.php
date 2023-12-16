@@ -8,7 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\CategoryController;
+
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\OrderController;
 
