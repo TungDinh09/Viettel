@@ -9,7 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
-
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,38 +29,45 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/Service/create', [ServiceController::class,"store"]);
-Route::PATCH('/Service/update/{id}', [ServiceController::class,"update"]);
-Route::delete('/Service/destroy/{id}', [ServiceController::class,"destroy"]);
+Route::post('/Service/create', [ServiceController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/Service/update/{id}', [ServiceController::class,"update"])->middleware('auth:admin');
+Route::delete('/Service/destroy/{id}', [ServiceController::class,"destroy"])->middleware('auth:admin');
 
-Route::post('/Product/create', [ProductController::class,"store"]);
-Route::PATCH('/Product/update/{id}', [ProductController::class,"update"]);
-Route::delete('/Product/destroy/{id}', [ProductController::class,"destroy"]);
+Route::post('/Product/create', [ProductController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/Product/update/{id}', [ProductController::class,"update"])->middleware('auth:admin');
+Route::delete('/Product/destroy/{id}', [ProductController::class,"destroy"])->middleware('auth:admin');
 
-Route::post('/Payment/create', [PaymentController::class,"store"]);
-Route::PATCH('/Payment/update/{id}', [PaymentController::class,"update"]);
-Route::delete('/Payment/destroy/{id}', [PaymentController::class,"destroy"]);
+Route::post('/Payment/create', [PaymentController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/Payment/update/{id}', [PaymentController::class,"update"])->middleware('auth:admin');
+Route::delete('/Payment/destroy/{id}', [PaymentController::class,"destroy"])->middleware('auth:admin');
 
-Route::post('/Order/create', [OrderController::class,"store"]);
-Route::PATCH('/Order/update/{id}', [OrderController::class,"update"]);
-Route::delete('/Order/destroy/{id}', [OrderController::class,"destroy"]);
+// Route::post('/Order/create', [OrderController::class,"store"]);
+Route::PATCH('/Order/update/{id}', [OrderController::class,"update"])->middleware('auth:admin');
+Route::delete('/Order/destroy/{id}', [OrderController::class,"destroy"])->middleware('auth:admin');
+Route::get('/Order/accept/{id}', [OrderController::class,"Accept"])->middleware('auth:admin');
+Route::get('/Order/unaccept/{id}', [OrderController::class,"UnAccept"])->middleware('auth:admin');
 
-Route::post('/Channel/create', [ChannelController::class,"store"]);
-Route::PATCH('/Channel/update/{id}', [ChannelController::class,"update"]);
-Route::delete('/Channel/destroy/{id}', [ChannelController::class,"destroy"]);
+Route::post('/Channel/create', [ChannelController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/Channel/update/{id}', [ChannelController::class,"update"])->middleware('auth:admin');
+Route::delete('/Channel/destroy/{id}', [ChannelController::class,"destroy"])->middleware('auth:admin');
 
-// Route::post('/Blog/create', [BlogController::class,"store"]);
-// Route::PATCH('/Blog/update/{id}', [BlogController::class,"update"]);
-// Route::delete('/Blog/destroy/{id}', [BlogController::class,"destroy"]);
+Route::post('/Blog/create', [BlogController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/Blog/update/{id}', [BlogController::class,"update"])->middleware('auth:admin');
+Route::delete('/Blog/destroy/{id}', [BlogController::class,"destroy"])->middleware('auth:admin');
 
-Route::post('/category/create', [CategoryController::class,"store"]);
-Route::PATCH('/category/update/{id}', [CategoryController::class,"update"]);
-Route::delete('/category/destroy/{id}', [CategoryController::class,"destroy"]);
 
-Route::post('/distric/create', [DistrictController::class,"store"]);
-Route::PATCH('/distric/update/{id}', [DistrictController::class,"update"]);
-Route::delete('/distric/destroy/{id}', [DistrictController::class,"destroy"]);
 
-Route::post('/city/create', [CityController::class,"store"]);
-Route::PATCH('/city/update/{id}', [CityController::class,"update"]);
-Route::delete('/city/destroy/{id}', [CityController::class,"destroy"]);
+Route::post('/category/create', [CategoryController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/category/update/{id}', [CategoryController::class,"update"])->middleware('auth:admin');
+Route::delete('/category/destroy/{id}', [CategoryController::class,"destroy"])->middleware('auth:admin');
+
+Route::post('/distric/create', [DistrictController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/distric/update/{id}', [DistrictController::class,"update"])->middleware('auth:admin');
+Route::delete('/distric/destroy/{id}', [DistrictController::class,"destroy"])->middleware('auth:admin');
+
+
+Route::post('/city/create', [CityController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/city/update/{id}', [CityController::class,"update"])->middleware('auth:admin');
+Route::delete('/city/destroy/{id}', [CityController::class,"destroy"])->middleware('auth:admin');
+
+Route::get('/admins', [AdminController::class,"index"])->middleware('auth:admin');

@@ -18,7 +18,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $admins = Admin::all();
+        return response()->json(['admins' => $admins]);
     }
 
     /**
@@ -31,54 +32,54 @@ class AdminController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        DB::beginTransaction();
+    //  */
+    // public function store(Request $request)
+    // {
+    //     DB::beginTransaction();
 
-        $request->validate([
-            'name'=>'required',
-            'email'=>'required|unique:admins',
-            'Phone'=>'required|unique:admins',
-            'Gender'=>'required',
-            'password'=>'required',
-            'dateOfBirth'=>'required',
-        ]);
-        try {
-            $admin = new Admin();
-            $dateofbirth = $request->Year . "/" . $request->Month . "/" . $request->Day;
-            $admin->FirstName = $request->FirstName;
-            $admin->LastName = $request->LastName;
-            $admin->name = $request->name;
-            $admin->email = $request->email;
-            $admin->Phone = $request->Phone;
-            $admin->Gender = $request->Gender;
-            $admin->password = Hash::make($request->password);
-            $admin->Address = $request->Address;
-            $admin->DateOfBirth = $dateofbirth;
+    //     $request->validate([
+    //         'name'=>'required',
+    //         'email'=>'required|unique:admins',
+    //         'Phone'=>'required|unique:admins',
+    //         'Gender'=>'required',
+    //         'password'=>'required',
+    //         'dateOfBirth'=>'required',
+    //     ]);
+    //     try {
+    //         $admin = new Admin();
+    //         $dateofbirth = $request->Year . "/" . $request->Month . "/" . $request->Day;
+    //         $admin->FirstName = $request->FirstName;
+    //         $admin->LastName = $request->LastName;
+    //         $admin->name = $request->name;
+    //         $admin->email = $request->email;
+    //         $admin->Phone = $request->Phone;
+    //         $admin->Gender = $request->Gender;
+    //         $admin->password = Hash::make($request->password);
+    //         $admin->Address = $request->Address;
+    //         $admin->DateOfBirth = $dateofbirth;
 
-            // Kiểm tra xem có tải lên hình ảnh (Avatar) hay không
-            if ($request->hasFile('Avatar')) {
-                $avatarPath = $request->file('Avatar')->store('avatars', 'public');
-                $admin->Avatar = $avatarPath;
-            } else {
-                $admin->Avatar = null;
-            }
+    //         // Kiểm tra xem có tải lên hình ảnh (Avatar) hay không
+    //         if ($request->hasFile('Avatar')) {
+    //             $avatarPath = $request->file('Avatar')->store('avatars', 'public');
+    //             $admin->Avatar = $avatarPath;
+    //         } else {
+    //             $admin->Avatar = null;
+    //         }
 
-            $admin->save();
+    //         $admin->save();
 
-            // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
-            DB::commit();
+    //         // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+    //         DB::commit();
 
-            return "Insert thành công";
-        } catch (\Exception $e) {
-            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
-            DB::rollback();
+    //         return "Insert thành công";
+    //     } catch (\Exception $e) {
+    //         // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+    //         DB::rollback();
 
-            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
-            return "Insert thất bại: " . $e->getMessage();
-        }
-    }
+    //         // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+    //         return "Insert thất bại: " . $e->getMessage();
+    //     }
+    // }
 
     /**
      * Display the specified resource.

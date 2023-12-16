@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category','service')->paginate(8);
+        $products = Product::with('category','service')->get();
 
         // Trả về dữ liệu sản phẩm dưới dạng JSON
         return response()->json(['products' => $products]);
@@ -290,19 +290,32 @@ public function update(Request $request, $id)
         
     }
     public function filter(Request $request){
-        $products = Product::with('category','service');
+        // echo(gettype( $request->input('CategoryID')));
+        // echo(gettype($request->input('sort')) );
+        // echo(gettype($request->input('min_Price')) );    
+        // echo(gettype($request->input('max_Price') ));
+        $products = Product::with('category','service')->get();
+        
+        
+        // echo($products);
 
         if($request->input('CategoryID') != null){
-            $products->whereIn('category.CategoryID', $request->input('CategoryID'));
+            $products = $products->whereIn('CategoryID',(int)$request->input('CategoryID'));
         }
-        if($request->input('ServiceID') != null){
-            $products->whereIn('service.ServiceID', $request->input('ServiceID'));
-        }
+
+        
+        // if($request->input('ServiceID') != null){
+        //     $products->whereIn('service.ServiceID', $request->input('ServiceID'));
+        // }
             
         if($request->input('sort') == 'A_Z'){
-            $products->orderBy('ProductID');
-        } elseif($request->input('sort') == 'Z_A'){
-            $products->orderByDesc('ProductID');
+            $products->sortBy(function ($item) {
+            return $item->ProductID;
+        });
+        } elseif($request->sort == 'Z_A'){
+            $products->sortByDesc(function ($item) {
+            return $item->ProductID;
+            });
         }
 
         if($request->input('min_Price') != null){
@@ -312,8 +325,7 @@ public function update(Request $request, $id)
             $products->where('products.Price','<=' ,$request->input('max_Price'));
         }
 
-        $products = $products->paginate(8);
-
         return response()->json(['products' => $products]);
     }
+    
 }
