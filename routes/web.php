@@ -42,4 +42,4 @@ Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/channel', [ChannelController::class, 'index']);
 Route::get('/service', [ServiceController::class, 'index']);
 Route::post('/order/insert', [OrderController::class, 'store']);
-Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:admin');
+Route::get('/orders', [OrderController::class, 'index']);
