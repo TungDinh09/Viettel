@@ -43,22 +43,22 @@ class CategoryController extends Controller
             'CategoryName'=>'required',
 
         ]);
-    try {
-        $category = new Category();
-        $category->CategoryName = $request->input('CategoryName');
-        $category->save();
+        try {
+            $category = new Category();
+            $category->CategoryName = $request->input('CategoryName');
+            $category->save();
 
-        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
-        DB::commit();
+            // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+            DB::commit();
 
-        return response()->json(['message' => 'Insert thành công'], 200);
-    } catch (\Exception $e) {
-        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
-        DB::rollback();
+            return response()->json(['message' => 'Insert thành công'], 200);
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+            DB::rollback();
 
-        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
-        return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
-    }
+            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+            return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

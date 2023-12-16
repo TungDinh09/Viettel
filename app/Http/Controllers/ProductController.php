@@ -53,52 +53,34 @@ class ProductController extends Controller
         ]);
 
         try {
-            $product = [
-                'ProductID' => $request->input('ProductID'),
-                'Speed' => $request->input('Speed'),
-                'Bandwidth' => $request->input('Bandwidth'),
-                'Price' => $request->input('Price'),
-                'Gift' => $request->input('Gift'),
-                'Description' => $request->input('Description'),
-                'IPstatic' => $request->input('IPstatic'),
-                'UseDay' => $request->input('UseDay'),
-                'CategoryID' => $request->input('CategoryID'),
-            ];
+            $product = new Product;
+            $product->ProductID = $request->input('ProductID');
+            $product->Speed = $request->input('Speed');
+            $product->Bandwidth = $request->input('Bandwidth');
+            $product->Price = (float)$request->input('Price');
+            $product->Gift = $request->input('Gift');
+            $product->Description = $request->input('Description');
+            $product->IPstatic = $request->input('IPstatic');
+            $product->UseDay = $request->input('UseDay');
+            $product->CategoryID = (int)$request->input('CategoryID');
+            
 
             if (!isset($request->ServiceID)) {
-                $product['ServiceID'] = null;
+                $product->ServiceID = null;
             } else {
-                $product['ServiceID'] = $request->input('ServiceID');
+                $product->ServiceID = (int)$request->input('ServiceID');
             }
 
-            // Assuming you have a Product model and corresponding database table
-            $productID = Product::insertGetId($product);
+            // echo($product);
 
-            $payments = $request->payments;
-            $channels = $request->channels;
-
-            if ($payments !== null) {
-                $paymentproduct = [];
-                foreach ($payments as $paymentID) {
-                    $paymentproduct[] = ['PaymentID' => $paymentID, "ProductID" => $productID];
-                }
-                PaymentProduct::insert($paymentproduct);
-            }
-
-            if ($channels !== null) {
-                $productChannel = [];
-                foreach ($channels as $channelID) {
-                    $productChannel[] = ['ChannelID' => $channelID, "ProductID" => $productID];
-                }
-                ProductChannel::insert($productChannel);
-            }
-
+            
+            $product->save();
             DB::commit();
 
-            return redirect()->route('products.index')->with('success', 'Product created successfully');
+            return response()->json(['message' => 'Insert thành công'], 200);
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('products.index')->with('error', 'Product creation failed. Please try again.');
+            return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
         }
     }
 
