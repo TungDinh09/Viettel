@@ -56,7 +56,7 @@ Route::PATCH('/Blog/update/{id}', [BlogController::class,"update"])->middleware(
 Route::delete('/Blog/destroy/{id}', [BlogController::class,"destroy"])->middleware('auth:admin');
 
 
-
+Route::get('/category/{id}', [CategoryController::class,"show"]);
 Route::post('/category/insert', [CategoryController::class,"store"])->middleware('auth:admin');
 Route::PATCH('/category/update/{id}', [CategoryController::class,"update"])->middleware('auth:admin');
 Route::delete('/category/destroy/{id}', [CategoryController::class,"destroy"])->middleware('auth:admin');
