@@ -71,4 +71,4 @@ Route::PATCH('/city/update/{id}', [CityController::class,"update"])->middleware(
 Route::delete('/city/destroy/{id}', [CityController::class,"destroy"])->middleware('auth:admin');
 
 Route::get('/admins', [AdminController::class,"index"])->middleware('auth:admin');
-Route::delete('/admin/delele/{id}', [AdminController::class,"destroy"])->middleware('auth:admin');
+Route::delete('/admin/delete/{id}', [AdminController::class,"destroy"])->middleware('auth:admin');
