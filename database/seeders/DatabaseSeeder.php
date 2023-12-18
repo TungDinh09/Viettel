@@ -26,11 +26,12 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             DistrictsTableSeeder::class,
             AdminSeeder::class,
-            BlogSeeder::class,
-            ChannelSeeder::class,
+            // BlogSeeder::class,
+            // ChannelSeeder::class,
             ServiceSeeder::class,
-            UserSeeder::class,
-            ProductSeeder::class
+            CategorySeeder::class,
+            // UserSeeder::class,
+            ProductSeeder::class,
         ]);
 
         // Blog::factory()->count(10)->create();

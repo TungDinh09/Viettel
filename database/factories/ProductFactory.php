@@ -20,7 +20,7 @@ class ProductFactory extends Factory
     {
         return [
             //
-            'ProductID' => $this->faker->unique()->uuid,
+            'ProductName' => $this->faker->uuid,
             'Speed' => $this->faker->word,
             'Bandwidth' => $this->faker->word,
             'Price' => $this->faker->randomFloat(2, 10, 1000),

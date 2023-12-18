@@ -86,33 +86,32 @@ class CategoryController extends Controller
     public function update(Request $request,  $id)
     {
         DB::beginTransaction();
+        try {
+            $category = Category::find($id);
+            
+            if (!$category) {
+                DB::rollback(); // Rollback transaction nếu danh mục không tồn tại
+                return response()->json(['message' => 'Category not found'], 404);
+            }
+            $request->validate([
+                'CategoryName'=>'required',
 
-    try {
-        $category = Category::find($id);
+            ]);
 
-        if (!$category) {
-            DB::rollback(); // Rollback transaction nếu danh mục không tồn tại
-            return response()->json(['message' => 'Category not found'], 404);
+            $category->CategoryName = $request->input('CategoryName');
+            $category->save();
+
+            // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+            DB::commit();
+
+            return response()->json(['message' => 'Update thành công'], 200);
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+            DB::rollback();
+
+            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+            return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
         }
-        $request->validate([
-            'CategoryName'=>'required',
-
-        ]);
-
-        $category->CategoryName = $request->input('CategoryName');
-        $category->save();
-
-        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
-        DB::commit();
-
-        return response()->json(['message' => 'Update thành công'], 200);
-    } catch (\Exception $e) {
-        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
-        DB::rollback();
-
-        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
-        return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
-    }
 
     }
 
@@ -124,7 +123,7 @@ class CategoryController extends Controller
          DB::beginTransaction();
 
     try {
-        $category = Category::find($id);
+        $category = Category::find((int)$id);
 
         if (!$category) {
             DB::rollback(); // Rollback transaction nếu danh mục không tồn tại

@@ -33,16 +33,19 @@ Route::post('/Service/create', [ServiceController::class,"store"])->middleware('
 Route::PATCH('/Service/update/{id}', [ServiceController::class,"update"])->middleware('auth:admin');
 Route::delete('/Service/destroy/{id}', [ServiceController::class,"destroy"])->middleware('auth:admin');
 
-Route::post('/product/insert', [ProductController::class,"store"]);
-Route::PATCH('/product/update/{id}', [ProductController::class,"update"])->middleware('auth:admin');
-Route::delete('/product/destroy/{id}', [ProductController::class,"destroy"])->middleware('auth:admin');
+
+Route::get('/product/{id}', [ProductController::class, 'show']);
+Route::post('/product/insert', [ProductController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/product/update/{id}',[ProductController::class, "update"])->middleware('auth:admin');
+Route::delete('/product/delete/{id}', [ProductController::class,"destroy"])->middleware('auth:admin');
 
 Route::post('/Payment/create', [PaymentController::class,"store"])->middleware('auth:admin');
 Route::PATCH('/Payment/update/{id}', [PaymentController::class,"update"])->middleware('auth:admin');
 Route::delete('/Payment/delete/{id}', [PaymentController::class,"destroy"])->middleware('auth:admin');
 
 // Route::post('/Order/create', [OrderController::class,"store"]);
-Route::PATCH('/Order/update/{id}', [OrderController::class,"update"])->middleware('auth:admin');
+// Route::PATCH('/Order/update/{id}', [OrderController::class,"update"])->middleware('auth:admin');
+Route::post('/order/insert', [OrderController::class, 'store']);
 Route::delete('/Order/destroy/{id}', [OrderController::class,"destroy"])->middleware('auth:admin');
 Route::get('/Order/accept/{id}', [OrderController::class,"Accept"])->middleware('auth:admin');
 Route::get('/Order/unaccept/{id}', [OrderController::class,"UnAccept"])->middleware('auth:admin');

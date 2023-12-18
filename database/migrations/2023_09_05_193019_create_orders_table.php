@@ -14,19 +14,19 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id('OrderID');
             $table->boolean('Accept');
-            $table->string('name', 225)->unique();
+            $table->string('name', 225);
             $table->char('Phone', 11);
-            $table->string('email', 225)->unique()->nullable();
+            // $table->string('email', 225)->unique()->nullable();
             $table->date('DateStart');
             $table->unsignedBigInteger('CityID');
             $table->unsignedBigInteger('DistrictID');
             $table->string('Address', 225);
-            $table->unsignedBigInteger('UserID')->nullable();
+            // $table->unsignedBigInteger('UserID')->nullable();
             $table->unsignedBigInteger('PaymentID')->nullable();
-            $table->string('ProductID');
+            $table->unsignedBigInteger('ProductID');
             $table->unsignedBigInteger('ServiceID')->nullable();
             $table->timestamps();
-            $table->foreign('UserID')->references('id')->on('users');
+            // $table->foreign('UserID')->references('id')->on('users');
             $table->foreign('DistrictID')->references('DistrictID')->on('districts');
             $table->foreign('CityID')->references('CityID')->on('cities');
             $table->foreign('PaymentID')->references('PaymentID')->on('payments');

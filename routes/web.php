@@ -32,14 +32,12 @@ require __DIR__.'/apirouter.php';
 
 //-------------------- get ----------------
 Route::get('/product', [ProductController::class, 'index']);
-Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::get('/city', [CityController::class, 'index']);
 Route::get('/district', [DistrictController::class, 'index']);
 Route::get('/payment',[PaymentController::class,'index']);
-Route::post('/product/filter',[ProductController::class, 'filter']);
+// Route::post('/product/filter',[ProductController::class, 'filter']);
 Route::get('/blog', [BlogController::class, 'index']);
 Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/channel', [ChannelController::class, 'index']);
 Route::get('/service', [ServiceController::class, 'index']);
-Route::post('/order/insert', [OrderController::class, 'store']);
 Route::get('/orders', [OrderController::class, 'index']);

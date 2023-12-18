@@ -3,19 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
-use App\Models\PaymentProduct;
-use App\Models\ProductChannel;
-
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductExport;
 use App\Imports\ProductImport;
-use App\Exports\PaymentProductExport;
-use App\Imports\PaymentProductImport;
-use App\Exports\ProductChannelExport;
-use App\Imports\ProductChannelImport;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -54,10 +46,10 @@ class ProductController extends Controller
 
         try {
             $product = new Product;
-            $product->ProductID = $request->input('ProductID');
+            $product->ProductName = $request->input('ProductName');
             $product->Speed = $request->input('Speed');
             $product->Bandwidth = $request->input('Bandwidth');
-            $product->Price = (float)$request->input('Price');
+            $product->Price = (int)$request->input('Price');
             $product->Gift = $request->input('Gift');
             $product->Description = $request->input('Description');
             $product->IPstatic = $request->input('IPstatic');
@@ -93,7 +85,6 @@ class ProductController extends Controller
         // echo($productID);
         $product = Product::where('ProductID','=',$id)->get();
         // Trả về dữ liệu sản phẩm dưới dạng JSON
-
         return response()->json(['product' => $product]);
     }
 
@@ -109,76 +100,56 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
 
-public function update(Request $request, $id)
-{
-    // Validate input data
-    $validator = Validator::make($request->all(), [
-        'ProductID' => 'required',
-        'Speed' => 'required',
-        'Bandwidth' => 'required',
-        'Price' => 'required',
-        'Description' => 'required',
-        // Add validation rules for other fields
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
-    }
-
-    try {
-        // Start a database transaction
+    
+    public function update(Request $request,  $id)
+    {
         DB::beginTransaction();
 
-        // Update the product
-        $product = [
-            'ProductID' => $request->input('ProductID'),
-            'Speed' => $request->input('Speed'),
-            'Bandwidth' => $request->input('Bandwidth'),
-            'Price' => $request->input('Price'),
-            'Description' => $request->input('Description'),
-            // Update other fields as needed
-        ];
-
-        if (!$request->has('ServiceID')) {
-            $product['ServiceID'] = null;
-        } else {
-            $product['ServiceID'] = $request->input('ServiceID');
-        }
-
-        Product::where('id', $id)->update($product);
-
-        // Update payments
-        $payments = $request->input('payments');
-        PaymentProduct::where('ProductID', $id)->delete();
-        if ($payments !== null) {
-            $paymentproduct = [];
-            foreach ($payments as $paymentID) {
-                $paymentproduct[] = ['PaymentID' => $paymentID, "ProductID" => $id];
+        try {
+            $product = Product::find($id);
+            
+            if (!$product) {
+                DB::rollback(); // Rollback transaction nếu danh mục không tồn tại
+                return response()->json(['message' => 'Category not found'], 404);
             }
-            PaymentProduct::insert($paymentproduct);
+            $request->validate([
+                'ProductName'=>'required',
+                'Price'=>'required',
+                'Speed'=>'required',
+                'Bandwidth'=>'required',
+                'Description'=>'required',
+                'IPstatic'=>'required',
+                'UseDay'=>'required',
+                'CategoryID'=>'required',
+                'ServiceID'=>'required',
+            ]);
+
+            $product->ProductName = $request->input('ProductName');
+            $product->Price = (int)$request->input('Price');
+            $product->Speed = $request->input('Speed');
+            $product->Bandwidth = $request->input('Bandwidth');
+            $product->Description = $request->input('Description');
+            $product->IPstatic = $request->input('IPstatic');
+            $product->UseDay = (int)$request->input("UseDay");
+            $product->Gift = (int)$request->input("Gift");
+            $product->CategoryID = (int)$request->input('CategoryID');
+            $product->ServiceID = (int)$request->input("ServiceID");
+
+            $product->save();
+
+            // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+            DB::commit();
+
+            return response()->json(['message' => 'Update thành công'], 200);
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+            DB::rollback();
+
+            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+            return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
         }
 
-        // Update channels
-        $channels = $request->input('channels');
-        ProductChannel::where('ProductID', $id)->delete();
-        if ($channels !== null) {
-            $productChannel = [];
-            foreach ($channels as $channelID) {
-                $productChannel[] = ['ChannelID' => $channelID, "ProductID" => $id];
-            }
-            ProductChannel::insert($productChannel);
-        }
-
-        // Commit the transaction
-        DB::commit();
-
-        return response()->json(['message' => 'Product updated successfully']);
-    } catch (\Exception $e) {
-        // Something went wrong, rollback the transaction
-        DB::rollBack();
-        return response()->json(['message' => 'Failed to update product', 'error' => $e->getMessage()], 500);
     }
-}
 
 
     /**
@@ -189,13 +160,6 @@ public function update(Request $request, $id)
         try {
         // Start a database transaction
         DB::beginTransaction();
-
-        // Delete payments related to the product
-        PaymentProduct::where('ProductID', $id)->delete();
-
-        // Delete product channels related to the product
-        ProductChannel::where('ProductID', $id)->delete();
-
         // Find and delete the product
         $product = Product::find($id);
 
@@ -220,10 +184,6 @@ public function update(Request $request, $id)
     public function export_backup(){
         $products = Product::all();
         return Excel::download(new ProductExport($products), 'products.xlsx');
-        $PaymentProducts = PaymentProduct::all();
-        return Excel::download(new PaymentProductExport($PaymentProducts), 'payment_of_products.xlsx');
-        $productchannels = ProductChannel::all();
-        return Excel::download(new ProductChannelExport($productchannels), 'channel_of_products.xlsx');
     }
     public function import_product(Request $request){
 
@@ -240,74 +200,60 @@ public function update(Request $request, $id)
 
         }
     }
-    public function import_payment_product(Request $request){
+    
+    // public function import_product_channel(Request $request){
 
-        // $request->validate([
-        //     'file' => 'required|mimes:xlsx,xls',
-        // ]);
+    //     // $request->validate([
+    //     //     'file' => 'required|mimes:xlsx,xls',
+    //     // ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+    //     if ($request->hasFile('file')) {
+    //         $file = $request->file('file');
 
-            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
-            $filePath = $file->getRealPath();
-            Excel::import(new PaymentProductImport, $filePath);
+    //         // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+    //         $filePath = $file->getRealPath();
+    //         Excel::import(new ProductChannelImport, $filePath);
 
-        }
-    }
-    public function import_product_channel(Request $request){
-
-        // $request->validate([
-        //     'file' => 'required|mimes:xlsx,xls',
-        // ]);
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-
-            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
-            $filePath = $file->getRealPath();
-            Excel::import(new ProductChannelImport, $filePath);
-
-        }
+    //     }
         
-    }
-    public function filter(Request $request){
-        // echo(gettype( $request->input('CategoryID')));
-        // echo(gettype($request->input('sort')) );
-        // echo(gettype($request->input('min_Price')) );    
-        // echo(gettype($request->input('max_Price') ));
-        $products = Product::with('category','service')->get();
+    // }
+    // public function filter(Request $request){
+    //     // echo(gettype( $request->input('CategoryID')));
+    //     // echo(gettype($request->input('sort')) );
+    //     // echo(gettype($request->input('min_Price')) );    
+    //     // echo(gettype($request->input('max_Price') ));
+    //     $products = Product::with('category','service')->get();
         
         
-        // echo($products);
+    //     // echo($products);
 
-        if($request->input('CategoryID') != null){
-            $products = $products->whereIn('CategoryID',(int)$request->input('CategoryID'));
-        }
+    //     if($request->input('CategoryID') != null){
+    //         $products = $products->whereIn('CategoryID',(int)$request->input('CategoryID'));
+    //     }
 
         
-        // if($request->input('ServiceID') != null){
-        //     $products->whereIn('service.ServiceID', $request->input('ServiceID'));
-        // }
+    //     // if($request->input('ServiceID') != null){
+    //     //     $products->whereIn('service.ServiceID', $request->input('ServiceID'));
+    //     // }
             
-        if($request->input('sort') == 'A_Z'){
-            $products->sortBy(function ($item) {
-            return $item->ProductID;
-        });
-        } elseif($request->sort == 'Z_A'){
-            $products->sortByDesc(function ($item) {
-            return $item->ProductID;
-            });
-        }
+    //     if($request->input('sort') == 'A_Z'){
+    //         $products->sortBy(function ($item) {
+    //         return $item->ProductID;
+    //     });
+    //     } elseif($request->sort == 'Z_A'){
+    //         $products->sortByDesc(function ($item) {
+    //         return $item->ProductID;
+    //         });
+    //     }
 
-        if($request->input('min_Price') != null){
-            $products->where('products.Price','>=' ,$request->input('min_Price'));
-        }
-        if($request->input('max_Price') != null){
-            $products->where('products.Price','<=' ,$request->input('max_Price'));
-        }
+    //     if($request->input('min_Price') != null){
+    //         $products->where('products.Price','>=' ,$request->input('min_Price'));
+    //     }
+    //     if($request->input('max_Price') != null){
+    //         $products->where('products.Price','<=' ,$request->input('max_Price'));
+    //     }
 
-        return response()->json(['products' => $products]);
-    }
+    //     return response()->json(['products' => $products]);
+    // }
     
 }

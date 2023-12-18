@@ -40,48 +40,42 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
+        $request->validate([
+            'ProductID'=>'required',
+            'name'=>'required',
+            'Phone'=>'required',
+            'CityID'=>'required',
+            'DistrictID'=>'required',
+            'PaymentID'=>'required',
+            'Address'=>'required',
+        ]);
 
         try {
-            
-            
-            $productID = $request->ProductID;
+            //set ProductID
+            $productID = $request->input('ProductID');
+            //Order
             $order = new Order;
             $order->ProductID = $productID;
-            $order->name = $request->name;
-            $order->Phone = $request->Phone;
-            $order->email = null;
-            $order->CityID = (int)$request->CityID;
-            $order->DistrictID= (int)$request->DistrictID;
-            $order->Address = $request->Address;
+            $order->name = $request->input('name');
+            $order->CityID = $request->input('CityID');
+            $order->DistrictID = $request->input('DistrictID');
+            $order->Phone = $request->input('Phone');
+            $order->PaymentID = (int)$request->input('PaymentID');
+            $order->Address = $request->input('Address');
+            $order->DateStart = date("Y-m-d");
             $order->Accept = FALSE;
-            $order->DateStart = now();
-            
-            $paymentID = $request->PaymentID;
-            
-            if ($paymentID !== null) {
-                $order->PaymentID = (int)$paymentID;
-                
-            } else {
-                $order->PaymentID = null;
-            }
-            
-            $product = Product::find($productID);   
-            $serviceID = $product->ServiceID;
-            if ($serviceID !== null) {
-                $order->ServiceID = $serviceID;
-            } else {
-                $order->ServiceID = null;
-            }
 
-            
+            $ServiceID = Product::find($productID)->value('ServiceID');
+            $order->ServiceID = $ServiceID;
+
             $order->save();
+            DB::commit();
 
-            DB::commit(); // Commit the transaction if everything is successful
+            return response()->json(['message' => 'Insert thành công'], 200);
         } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if an error occurs
-            // Handle the error, log it, or return an error response
+            DB::rollback();
+            return response()->json(['message' => 'Insert thất bại: ' . $e->getMessage()], 500);
         }
-         
     }
 
     /**
@@ -194,8 +188,8 @@ class OrderController extends Controller
     ->leftJoin('districts', 'orders.DistrictID', '=', 'districts.DistrictID')
     ->select([
         'OrderID',
-        'ProductPrice',
         'Accept',
+        'ProductPrice',
         'name',
         'Phone',
         'email',
@@ -246,46 +240,46 @@ class OrderController extends Controller
           
         }
     }
-    public function OrderForm(Request $request){
-        DB::beginTransaction();
+    // public function OrderForm(Request $request){
+    //     DB::beginTransaction();
 
-        try {
-            $userid = Auth::user()->id;
-            $productID = $request->productID;
-            $order = new Order;
-            $order->ProductID = $productID;
-            $order->Phone = $request->Phone;
-            $order->email = $request->email;
-            $order->CityID = $request->CityID;
-            $order->DistrictID= $request->DistrictID;
-            $order->Address = $request->Address;
-            $order->Accept = FALSE;
-            $order->DateStart = now();
+    //     try {
+    //         $userid = Auth::user()->id;
+    //         $productID = $request->productID;
+    //         $order = new Order;
+    //         $order->ProductID = $productID;
+    //         $order->Phone = $request->Phone;
+    //         $order->email = $request->email;
+    //         $order->CityID = $request->CityID;
+    //         $order->DistrictID= $request->DistrictID;
+    //         $order->Address = $request->Address;
+    //         $order->Accept = FALSE;
+    //         $order->DateStart = now();
 
             
-            $paymentID = $request->PaymentID;
+    //         $paymentID = $request->PaymentID;
             
-            if ($paymentID !== null) {
-                $order->PaymentID = $paymentID;
-            } else {
-                $order->PaymentID = null;
-            }
+    //         if ($paymentID !== null) {
+    //             $order->PaymentID = $paymentID;
+    //         } else {
+    //             $order->PaymentID = null;
+    //         }
             
-            $ServiceID = Product::find($productID)->select('ServiceID');
+    //         $ServiceID = Product::find($productID)->select('ServiceID');
             
-            if ($ServiceID !== null) {
-                $order->ServiceID = $ServiceID;
-            } else {
-                $order->ServiceID = null;
-            }
+    //         if ($ServiceID !== null) {
+    //             $order->ServiceID = $ServiceID;
+    //         } else {
+    //             $order->ServiceID = null;
+    //         }
 
-            $order->save();
+    //         $order->save();
 
-            DB::commit(); // Commit the transaction if everything is successful
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if an error occurs
-            // Handle the error, log it, or return an error response
-        }
+    //         DB::commit(); // Commit the transaction if everything is successful
+    //     } catch (\Exception $e) {
+    //         DB::rollback(); // Rollback the transaction if an error occurs
+    //         // Handle the error, log it, or return an error response
+    //     }
         
-    }
+    // }
 }

@@ -12,19 +12,17 @@ class Order extends Model
     protected $table = 'orders';
     protected $primaryKey = 'OrderID';
     protected $fillable = [
-        'ProductPrice',
         'Accept',
         'name',
         'Phone',
-        'email',
+        // 'email',
         'CityID',
         'DistrictID',
         'Address',
         'DateStart',
-        'ServicePrice',
-        'UserID',
+        // 'UserID',
         'PaymentID',
-        'ProductID',
+        'ProductID', 
         'ServiceID',
     ];
 
