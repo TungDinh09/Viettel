@@ -21,7 +21,7 @@ class ServiceFactory extends Factory
         return [
             //
             'ServiceName' => $this->faker->unique()->word,
-            'Price' => $this->faker->randomFloat(2, 10, 1000),
+            'Price' => $this->faker->int(2, 10, 1000),
         ];
     }
 }
