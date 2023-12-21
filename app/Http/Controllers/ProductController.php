@@ -63,7 +63,7 @@ class ProductController extends Controller
             $product->IPstatic = $request->input('IPstatic');
             $product->UseDay = $request->input('UseDay');
             $product->CategoryID = (int)$request->input('CategoryID');
-            
+
 
             if (!isset($request->ServiceID)) {
                 $product->ServiceID = null;
@@ -73,7 +73,7 @@ class ProductController extends Controller
 
             // echo($product);
 
-            
+
             $product->save();
             DB::commit();
 
@@ -112,64 +112,53 @@ class ProductController extends Controller
 public function update(Request $request, $id)
 {
     // Validate input data
-    $validator = Validator::make($request->all(), [
-        'ProductID' => 'required',
-        'Speed' => 'required',
-        'Bandwidth' => 'required',
-        'Price' => 'required',
-        'Description' => 'required',
-        // Add validation rules for other fields
-    ]);
+    // $validator = Validator::make($request->all(), [
+    //     'ProductID' => 'required',
+    //     'Speed' => 'required',
+    //     'Bandwidth' => 'required',
+    //     'Price' => 'required',
+    //     'Description' => 'required',
+    //     // Add validation rules for other fields
+    // ]);
 
-    if ($validator->fails()) {
-        return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
-    }
+    // if ($validator->fails()) {
+    //     return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
+    // }
 
     try {
         // Start a database transaction
         DB::beginTransaction();
 
         // Update the product
-        $product = [
-            'ProductID' => $request->input('ProductID'),
-            'Speed' => $request->input('Speed'),
-            'Bandwidth' => $request->input('Bandwidth'),
-            'Price' => $request->input('Price'),
-            'Description' => $request->input('Description'),
-            // Update other fields as needed
-        ];
+        $product = Product::find($id);
 
-        if (!$request->has('ServiceID')) {
-            $product['ServiceID'] = null;
+        $request->validate([
+            'Speed'=>'required',
+            'Bandwidth'=>'required',
+            'IPstatic'=>'required',
+            'UseDay'=>'required',
+            'CategoryID'=>'required',
+        ]);
+        $product->Speed = $request->input('Speed');
+        $product->Bandwidth = $request->input('Bandwidth');
+        $product->Price = (float)$request->input('Price');
+        $product->Gift = $request->input('Gift');
+        $product->Description = $request->input('Description');
+        $product->IPstatic = $request->input('IPstatic');
+        $product->UseDay = $request->input('UseDay');
+        $product->CategoryID = (int)$request->input('CategoryID');
+
+
+
+        if (!isset($request->ServiceID)) {
+            $product->ServiceID = null;
         } else {
-            $product['ServiceID'] = $request->input('ServiceID');
+            $product->ServiceID = (int)$request->input('ServiceID');
         }
 
-        Product::where('id', $id)->update($product);
+        $product->save();
 
-        // Update payments
-        $payments = $request->input('payments');
-        PaymentProduct::where('ProductID', $id)->delete();
-        if ($payments !== null) {
-            $paymentproduct = [];
-            foreach ($payments as $paymentID) {
-                $paymentproduct[] = ['PaymentID' => $paymentID, "ProductID" => $id];
-            }
-            PaymentProduct::insert($paymentproduct);
-        }
 
-        // Update channels
-        $channels = $request->input('channels');
-        ProductChannel::where('ProductID', $id)->delete();
-        if ($channels !== null) {
-            $productChannel = [];
-            foreach ($channels as $channelID) {
-                $productChannel[] = ['ChannelID' => $channelID, "ProductID" => $id];
-            }
-            ProductChannel::insert($productChannel);
-        }
-
-        // Commit the transaction
         DB::commit();
 
         return response()->json(['message' => 'Product updated successfully']);
@@ -190,13 +179,6 @@ public function update(Request $request, $id)
         // Start a database transaction
         DB::beginTransaction();
 
-        // Delete payments related to the product
-        PaymentProduct::where('ProductID', $id)->delete();
-
-        // Delete product channels related to the product
-        ProductChannel::where('ProductID', $id)->delete();
-
-        // Find and delete the product
         $product = Product::find($id);
 
         if (!$product) {
@@ -240,21 +222,21 @@ public function update(Request $request, $id)
 
         }
     }
-    public function import_payment_product(Request $request){
+    // public function import_payment_product(Request $request){
 
-        // $request->validate([
-        //     'file' => 'required|mimes:xlsx,xls',
-        // ]);
+    //     // $request->validate([
+    //     //     'file' => 'required|mimes:xlsx,xls',
+    //     // ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
+    //     if ($request->hasFile('file')) {
+    //         $file = $request->file('file');
 
-            // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
-            $filePath = $file->getRealPath();
-            Excel::import(new PaymentProductImport, $filePath);
+    //         // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
+    //         $filePath = $file->getRealPath();
+    //         Excel::import(new PaymentProductImport, $filePath);
 
-        }
-    }
+    //     }
+    // }
     public function import_product_channel(Request $request){
 
         // $request->validate([
@@ -269,27 +251,27 @@ public function update(Request $request, $id)
             Excel::import(new ProductChannelImport, $filePath);
 
         }
-        
+
     }
     public function filter(Request $request){
         // echo(gettype( $request->input('CategoryID')));
         // echo(gettype($request->input('sort')) );
-        // echo(gettype($request->input('min_Price')) );    
+        // echo(gettype($request->input('min_Price')) );
         // echo(gettype($request->input('max_Price') ));
         $products = Product::with('category','service')->get();
-        
-        
+
+
         // echo($products);
 
         if($request->input('CategoryID') != null){
             $products = $products->whereIn('CategoryID',(int)$request->input('CategoryID'));
         }
 
-        
+
         // if($request->input('ServiceID') != null){
         //     $products->whereIn('service.ServiceID', $request->input('ServiceID'));
         // }
-            
+
         if($request->input('sort') == 'A_Z'){
             $products->sortBy(function ($item) {
             return $item->ProductID;
@@ -309,5 +291,5 @@ public function update(Request $request, $id)
 
         return response()->json(['products' => $products]);
     }
-    
+
 }

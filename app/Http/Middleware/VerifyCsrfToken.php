@@ -24,5 +24,7 @@ class VerifyCsrfToken extends Middleware
        "/Order/destroy/*",
        "/product/insert",
        "/category/update/*",
+       "/product/update/*",
+       "/product/update1",
     ];
 }

@@ -35,7 +35,7 @@ Route::delete('/Service/destroy/{id}', [ServiceController::class,"destroy"])->mi
 
 Route::post('/product/insert', [ProductController::class,"store"]);
 Route::PATCH('/product/update/{id}', [ProductController::class,"update"])->middleware('auth:admin');
-Route::delete('/product/destroy/{id}', [ProductController::class,"destroy"])->middleware('auth:admin');
+Route::delete('/product/delete/{id}', [ProductController::class,"destroy"])->middleware('auth:admin');
 
 Route::post('/Payment/create', [PaymentController::class,"store"])->middleware('auth:admin');
 Route::PATCH('/Payment/update/{id}', [PaymentController::class,"update"])->middleware('auth:admin');
