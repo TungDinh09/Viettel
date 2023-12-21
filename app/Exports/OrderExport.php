@@ -2,8 +2,11 @@
 
 namespace App\Exports;
 
-use App\Models\Order;
+// use App\Models\Order;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class OrderExport implements FromArray, WithHeadings, WithMapping
 {
@@ -26,20 +29,19 @@ class OrderExport implements FromArray, WithHeadings, WithMapping
     public function headings(): array{
         return [
             'OrderID',
+            'ProductName',
             'ProductPrice',
             'Accept',
             'name',
             'Phone',
-            'email',
             'CityName',
             'DistrictName',
             'Address',
             'DateStart',
-            'ServicePrice',
-            'UserID',
-            'PaymentName',
-            'ProductName',
             'ServiceName',
+            'ServicePrice',
+            'PaymentName',
+            
         ];
     }
     /**
@@ -55,20 +57,20 @@ class OrderExport implements FromArray, WithHeadings, WithMapping
     public function map($row): array{
         return [
             $row['OrderID'],
+            $row['ProductName'],
             $row['ProductPrice'],
             $row['Accept'],
             $row['name'],
             $row['Phone'],
-            $row['email'],
             $row['CityName'],
             $row['DistrictName'],
             $row['Address'],
             $row['DateStart'],
-            $row['ServicePrice'],
-            $row['UserID'],
-            $row['PaymentName'],
-            $row['ProductName'],
             $row['ServiceName'],
+            $row['ServicePrice'],
+            $row['PaymentName'],
+            
+            
         ];
     }
 }

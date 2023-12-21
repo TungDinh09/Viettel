@@ -145,8 +145,14 @@ class CategoryController extends Controller
     }
     }
     public function export(){
-        $categories = Category::all();
-        return Excel::download(new CategoryExport($categories), 'categories.xlsx');
+        
+        try {
+            $categories = Category::all();
+            return response()->json(['categories' => $categories]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        // return Excel::download(new CategoryExport($categories), 'categories.xlsx');
     }
     public function import(Request $request)
     {

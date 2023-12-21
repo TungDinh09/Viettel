@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\ProductExport;
-use App\Imports\ProductImport;
 use Illuminate\Support\Facades\DB;
+use App\Imports\ProductImport;
+use App\Exports\ProductExport;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -150,6 +151,7 @@ class ProductController extends Controller
         }
 
     }
+    
 
 
     /**
@@ -181,10 +183,15 @@ class ProductController extends Controller
             return response()->json(['message' => 'Failed to delete product', 'error' => $e->getMessage()], 500);
         }
     }
-    public function export_backup(){
-        $products = Product::all();
-        return Excel::download(new ProductExport($products), 'products.xlsx');
+    public function export() {
+        try {
+            $products = Product::all();
+            return response()->json(['products' => $products]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+
     public function import_product(Request $request){
 
         // $request->validate([
@@ -201,59 +208,6 @@ class ProductController extends Controller
         }
     }
     
-    // public function import_product_channel(Request $request){
-
-    //     // $request->validate([
-    //     //     'file' => 'required|mimes:xlsx,xls',
-    //     // ]);
-
-    //     if ($request->hasFile('file')) {
-    //         $file = $request->file('file');
-
-    //         // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
-    //         $filePath = $file->getRealPath();
-    //         Excel::import(new ProductChannelImport, $filePath);
-
-    //     }
-        
-    // }
-    // public function filter(Request $request){
-    //     // echo(gettype( $request->input('CategoryID')));
-    //     // echo(gettype($request->input('sort')) );
-    //     // echo(gettype($request->input('min_Price')) );    
-    //     // echo(gettype($request->input('max_Price') ));
-    //     $products = Product::with('category','service')->get();
-        
-        
-    //     // echo($products);
-
-    //     if($request->input('CategoryID') != null){
-    //         $products = $products->whereIn('CategoryID',(int)$request->input('CategoryID'));
-    //     }
-
-        
-    //     // if($request->input('ServiceID') != null){
-    //     //     $products->whereIn('service.ServiceID', $request->input('ServiceID'));
-    //     // }
-            
-    //     if($request->input('sort') == 'A_Z'){
-    //         $products->sortBy(function ($item) {
-    //         return $item->ProductID;
-    //     });
-    //     } elseif($request->sort == 'Z_A'){
-    //         $products->sortByDesc(function ($item) {
-    //         return $item->ProductID;
-    //         });
-    //     }
-
-    //     if($request->input('min_Price') != null){
-    //         $products->where('products.Price','>=' ,$request->input('min_Price'));
-    //     }
-    //     if($request->input('max_Price') != null){
-    //         $products->where('products.Price','<=' ,$request->input('max_Price'));
-    //     }
-
-    //     return response()->json(['products' => $products]);
-    // }
+    
     
 }

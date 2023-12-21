@@ -181,54 +181,80 @@ class OrderController extends Controller
         return Excel::download(new OrderBackUpExport($orderBackup), 'Order_BackUp.xlsx');
     }
     public function export(){
-        $order = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
+        $orders = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
     ->leftJoin('payments', 'orders.PaymentID', '=', 'payments.PaymentID')
     ->leftJoin('services', 'orders.ServiceID', '=', 'services.ServiceID')
     ->leftJoin('cities', 'orders.CityID', '=', 'cities.CityID')
     ->leftJoin('districts', 'orders.DistrictID', '=', 'districts.DistrictID')
     ->select([
         'OrderID',
-        'Accept',
-        'ProductPrice',
+        'ProductName',
+        'products.Price as ProductPrice',
+        'orders.DateStart as DateStart',
         'name',
         'Phone',
-        'email',
         'CityName',
         'DistrictName',
-        'Addess',
-        'DateStart',
-        'ServicePrice',
-        'UserID',
-        'PaymentName',
-        'ProductName',
+        'orders.Address as Address',
         'ServiceName',
+        'services.Price as ServicePrice',
+        'PaymentName',
+        DB::raw('(CASE WHEN orders.Accept = true THEN "đã xác nhận" ELSE "chưa xác nhận" END) AS Accept'),
     ])
     ->get();
 
-        return Excel::download(new OrderExport($order), 'Order.xlsx');
+    return response()->json(['orders' => $orders]);
                 
     }
-    public function exportActiveFalse(){
-        $order = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
+    public function exportUnAccept(){
+        $orders = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
     ->leftJoin('payments', 'orders.PaymentID', '=', 'payments.PaymentID')
     ->leftJoin('services', 'orders.ServiceID', '=', 'services.ServiceID')
+    ->leftJoin('cities', 'orders.CityID', '=', 'cities.CityID')
+    ->leftJoin('districts', 'orders.DistrictID', '=', 'districts.DistrictID')
     ->where('orders.Accept', '=', false)
     ->select([
         'OrderID',
-        'ProductPrice',
-        'Accept',
+        'ProductName',
+        'products.Price as ProductPrice',
+        'orders.DateStart as DateStart',
         'name',
         'Phone',
-        'email',
-        'DateStart',
-        'ServicePrice',
-        'UserID',
-        'PaymentName',
-        'ProductName',
+        'CityName',
+        'DistrictName',
+        'orders.Address as Address',
         'ServiceName',
+        'services.Price as ServicePrice',
+        'PaymentName',
+        DB::raw('(CASE WHEN orders.Accept = true THEN "đã xác nhận" ELSE "chưa xác nhận" END) AS Accept'),
     ])
-    ->get();
-        return Excel::download(new OrderExport($order), 'Order_NonAccept.xlsx'); 
+    ->get(); 
+    return response()->json(['orders' => $orders]);
+    }
+    public function exportAccept(){
+        $orders = Order::leftJoin('products', 'orders.ProductID', '=', 'products.ProductID')
+    ->leftJoin('payments', 'orders.PaymentID', '=', 'payments.PaymentID')
+    ->leftJoin('services', 'orders.ServiceID', '=', 'services.ServiceID')
+    ->leftJoin('cities', 'orders.CityID', '=', 'cities.CityID')
+    ->leftJoin('districts', 'orders.DistrictID', '=', 'districts.DistrictID')
+    ->where('orders.Accept', '=', true)
+    ->select([
+        'OrderID',
+        'ProductName',
+        'products.Price as ProductPrice',
+        'orders.DateStart as DateStart',
+        'name',
+        'Phone',
+        'CityName',
+        'DistrictName',
+        'orders.Address as Address',
+        'ServiceName',
+        'services.Price as ServicePrice',
+        'PaymentName',
+        DB::raw('(CASE WHEN orders.Accept = true THEN "đã xác nhận" ELSE "chưa xác nhận" END) AS Accept'),
+    ])
+    ->get(); 
+    return response()->json(['orders' => $orders]); 
     }
     public function import(Request $request){
         if ($request->hasFile('file')) {

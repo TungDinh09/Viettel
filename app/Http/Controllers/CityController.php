@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\City;
 use Illuminate\Support\Facades\DB;
 use App\Exports\CityExport;
-use App\Imports\CitiesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CityImport;
 
@@ -138,7 +137,7 @@ class CityController extends Controller
     }
     public function export(){
         $cities = City::all();
-        return Excel::download(new CityExport($cities), 'cities.xlsx');
+        return response()->json(['cities' => $cities]);
     }
     public function import(Request $request){
         // $filePath = "C:\\Users\\tungd\\Downloads\\cities.xlsx";
