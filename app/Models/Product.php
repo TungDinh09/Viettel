@@ -14,6 +14,8 @@ class Product extends Model
         'ProductName',
         'Speed',
         'Bandwidth',
+        'sort',
+        'NTPrice',
         'Price',
         'Gift',
         'Description',

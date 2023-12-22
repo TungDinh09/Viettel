@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('Speed', 50);
             $table->string('Bandwidth', 50);
             $table->BigInteger('Price');
-            $table->string('Gift', 225);
-            $table->string('Description', 225);
+            $table->BigInteger('NTPrice');
+            $table->integer('sort');
+            $table->longText('Gift');
+            $table->longText('Description');
             $table->string('IPstatic', 50);
             $table->integer('UseDay');
             $table->unsignedBigInteger('CategoryID');

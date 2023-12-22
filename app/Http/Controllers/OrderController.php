@@ -190,6 +190,7 @@ class OrderController extends Controller
         'OrderID',
         'ProductName',
         'products.Price as ProductPrice',
+        'products.NTPrice as "Giá Ngoại Thành"',
         'orders.DateStart as DateStart',
         'name',
         'Phone',
@@ -217,6 +218,7 @@ class OrderController extends Controller
         'OrderID',
         'ProductName',
         'products.Price as ProductPrice',
+        'products.NTPrice as "Giá Ngoại Thành"',
         'orders.DateStart as DateStart',
         'name',
         'Phone',
@@ -242,6 +244,7 @@ class OrderController extends Controller
         'OrderID',
         'ProductName',
         'products.Price as ProductPrice',
+        'products.NTPrice as "Giá Ngoại Thành"',
         'orders.DateStart as DateStart',
         'name',
         'Phone',
@@ -253,8 +256,8 @@ class OrderController extends Controller
         'PaymentName',
         DB::raw('(CASE WHEN orders.Accept = true THEN "đã xác nhận" ELSE "chưa xác nhận" END) AS Accept'),
     ])
-    ->get(); 
-    return response()->json(['orders' => $orders]); 
+    ->get();
+    return response()->json(['orders' => $orders]);
     }
     public function import(Request $request){
         if ($request->hasFile('file')) {

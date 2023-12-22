@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             // BlogSeeder::class,
             // ChannelSeeder::class,
+            
             ServiceSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class

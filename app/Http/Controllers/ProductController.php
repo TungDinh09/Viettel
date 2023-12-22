@@ -51,6 +51,8 @@ class ProductController extends Controller
             $product->Speed = $request->input('Speed');
             $product->Bandwidth = $request->input('Bandwidth');
             $product->Price = (int)$request->input('Price');
+            $product->NTPrice = (int)$request->input('NTPrice');
+            $product->sort = (int)$request->input('sort');
             $product->Gift = $request->input('Gift');
             $product->Description = $request->input('Description');
             $product->IPstatic = $request->input('IPstatic');
@@ -124,15 +126,16 @@ class ProductController extends Controller
                 'CategoryID'=>'required',
                 'ServiceID'=>'required',
             ]);
-            $product->ProductID = $request->input('ProductID');
             $product->ProductName = $request->input('ProductName');
             $product->Price = (int)$request->input('Price');
             $product->Speed = $request->input('Speed');
             $product->Bandwidth = $request->input('Bandwidth');
+            $product->NTPrice = (int)$request->input('NTPrice');
+            $product->sort = (int)$request->input('sort');
             $product->Description = $request->input('Description');
             $product->IPstatic = $request->input('IPstatic');
             $product->UseDay = (int)$request->input("UseDay");
-            $product->Gift = (int)$request->input("Gift");
+            $product->Gift = $request->input("Gift");
             $product->CategoryID = (int)$request->input('CategoryID');
             $product->ServiceID = (int)$request->input("ServiceID");
 
