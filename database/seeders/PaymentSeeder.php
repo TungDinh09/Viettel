@@ -14,22 +14,16 @@ class PaymentSeeder extends Seeder
     public function run(): void
     {
         //
+      
         DB::table('payments')->insert([
-            'PaymentName' => 'Đóng cước 1 tháng ',
-            'PaymentDescription' => 'Trả trước 1 tháng',
-            'DayPayment'=> '3',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        DB::table('payments')->insert([
-            'PaymentName' => 'Đóng cước 2 tháng ',
+            'PaymentName' => 'Đóng cước 6 tháng ',
             'PaymentDescription' => 'Trả trước 3 tháng',
             'DayPayment'=> '3',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('payments')->insert([
-            'PaymentName' => 'Đóng cước 3 tháng ',
+            'PaymentName' => 'Đóng cước 12 tháng ',
             'PaymentDescription' => 'Trả trước 6 tháng',
             'DayPayment'=> '3',
             'created_at' => now(),
