@@ -56,7 +56,7 @@ class ProductController extends Controller
             $product->IPstatic = $request->input('IPstatic');
             $product->UseDay = $request->input('UseDay');
             $product->CategoryID = (int)$request->input('CategoryID');
-            
+
 
             if (!isset($request->ServiceID)) {
                 $product->ServiceID = null;
@@ -66,7 +66,7 @@ class ProductController extends Controller
 
             // echo($product);
 
-            
+
             $product->save();
             DB::commit();
 
@@ -150,6 +150,7 @@ class ProductController extends Controller
             return response()->json(['message' => 'Update thất bại: ' . $e->getMessage()], 500);
         }
 
+
     }
     
 
@@ -162,7 +163,7 @@ class ProductController extends Controller
         try {
         // Start a database transaction
         DB::beginTransaction();
-        // Find and delete the product
+
         $product = Product::find($id);
 
         if (!$product) {
@@ -192,6 +193,7 @@ class ProductController extends Controller
         }
     }
 
+
     public function import_product(Request $request){
 
         // $request->validate([
@@ -203,11 +205,11 @@ class ProductController extends Controller
 
             // Lấy đường dẫn tuyệt đối tạm thời cho tệp tin
             $filePath = $file->getRealPath();
+
             Excel::import(new ProductImport, $filePath);
 
         }
     }
-    
-    
-    
+
 }
+

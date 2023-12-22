@@ -30,8 +30,7 @@ class DatabaseSeeder extends Seeder
             // ChannelSeeder::class,
             ServiceSeeder::class,
             CategorySeeder::class,
-            // UserSeeder::class,
-            ProductSeeder::class,
+            ProductSeeder::class
         ]);
 
         // Blog::factory()->count(10)->create();

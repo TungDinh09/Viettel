@@ -34,9 +34,11 @@ Route::PATCH('/Service/update/{id}', [ServiceController::class,"update"])->middl
 Route::delete('/Service/destroy/{id}', [ServiceController::class,"destroy"])->middleware('auth:admin');
 
 
+
 Route::get('/product/detail/{id}', [ProductController::class, 'show']);
 Route::post('/product/insert', [ProductController::class,"store"])->middleware('auth:admin');
 Route::PATCH('/product/update/{id}',[ProductController::class, "update"])->middleware('auth:admin');
+
 Route::delete('/product/delete/{id}', [ProductController::class,"destroy"])->middleware('auth:admin');
 
 Route::post('/Payment/create', [PaymentController::class,"store"])->middleware('auth:admin');
@@ -74,6 +76,7 @@ Route::PATCH('/city/update/{id}', [CityController::class,"update"])->middleware(
 Route::delete('/city/destroy/{id}', [CityController::class,"destroy"])->middleware('auth:admin');
 
 Route::get('/admins', [AdminController::class,"index"])->middleware('auth:admin');
+
 Route::delete('/admin/delete/{id}', [AdminController::class,"destroy"])->middleware('auth:admin');
 
 Route::get('/city/export',[CityController::class,"export"])->middleware('auth:admin');
@@ -82,3 +85,4 @@ Route::get('/categories/export',[CategoryController::class,"export"])->middlewar
 Route::get('/order/export/UnAccept',[OrderController::class,"exportUnAccept"])->middleware('auth:admin');
 Route::get('/order/export/Accept',[OrderController::class,"exportAccept"])->middleware('auth:admin');
 Route::get('/product/export',[ProductController::class,"export"])->middleware('auth:admin');
+
