@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id('ServiceID');
             $table->string('ServiceName', 225);
-            $table->decimal('Price', 10, 2);
+            $table->BigInteger('Price');
             $table->timestamps();
             $table->unique('ServiceName');
         });

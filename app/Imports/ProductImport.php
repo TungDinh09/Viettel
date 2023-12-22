@@ -30,7 +30,8 @@ class ProductImport implements ToModel,WithHeadingRow
     {
         return new Product([
             //
-            'ProductID '=> $row['productid'],
+            'ProductID'=> $row['productid'],
+            'ProductName'=> $row['productname'],
             'Speed' => $row['speed'],
             'Bandwidth' => $row['bandwidth'],
             'Price' => $row['price'],

@@ -26,10 +26,9 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             DistrictsTableSeeder::class,
             AdminSeeder::class,
-            BlogSeeder::class,
-            ChannelSeeder::class,
+            // BlogSeeder::class,
+            // ChannelSeeder::class,
             ServiceSeeder::class,
-            UserSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class
         ]);

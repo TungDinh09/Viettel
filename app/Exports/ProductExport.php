@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Product;
+// use App\Models\Product;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -30,6 +30,7 @@ class ProductExport implements FromArray, WithHeadings, WithMapping
     public function headings(): array{
         return [
             'ProductID' ,
+            'ProductName',
             'Speed' ,
             'Bandwidth' ,
             'Price' ,
@@ -38,6 +39,7 @@ class ProductExport implements FromArray, WithHeadings, WithMapping
             'IPstatic',
             'UseDay',
             'CategoryID',
+            'ServiceID',
         ];
     }
     /**
@@ -53,15 +55,16 @@ class ProductExport implements FromArray, WithHeadings, WithMapping
     public function map($row): array{
         return [
             $row['ProductID'],
+            $row['ProductName'],
             $row['Speed'], 
             $row['Bandwidth'],
-            $row['DayPayment'],
             $row['Price'], 
             $row['Gift'].
             $row['Description'],
             $row['IPstatic'],
             $row['UseDay'],
             $row['CategoryID'],
+            $row['ServiceID'],
         ];
     }
 }

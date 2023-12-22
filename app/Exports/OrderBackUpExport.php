@@ -30,7 +30,6 @@ class OrderBackUpExport implements FromArray, WithHeadings, WithMapping
     public function headings(): array{
         return [
             'OrderID',
-            'ProductPrice',
             'Accept',
             'name',
             'Phone',
@@ -39,7 +38,6 @@ class OrderBackUpExport implements FromArray, WithHeadings, WithMapping
             'DistrictID',
             'Address',
             'DateStart',
-            'ServicePrice',
             'UserID',
             'PaymentID',
             'ProductID',

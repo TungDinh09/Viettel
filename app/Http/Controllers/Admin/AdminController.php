@@ -104,76 +104,76 @@ class AdminController extends Controller
     {
         DB::beginTransaction();
 
-    try {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        if (!$admin) {
-            DB::rollback(); // Rollback transaction nếu quản trị viên không tồn tại
-            return response()->json(['message' => 'Admin not found'], 404);
+            if (!$admin) {
+                DB::rollback(); // Rollback transaction nếu quản trị viên không tồn tại
+                return response()->json(['message' => 'Admin not found'], 404);
+            }
+
+            $dateofbirth = $request->Year . "/" . $request->Month . "/" . $request->Day;
+            $admin->FirstName = $request->FirstName;
+            $admin->LastName = $request->LastName;
+            $admin->name = $request->name;
+            $admin->email = $request->email;
+            $admin->Phone = $request->Phone;
+            $admin->Gender = $request->Gender;
+            $admin->password = Hash::make($request->password);
+            $admin->Address = $request->Address;
+            $admin->DateOfBirth = $dateofbirth;
+
+            // Kiểm tra xem có tải lên hình ảnh (Avatar) hay không
+            if ($request->hasFile('Avatar')) {
+                $avatarPath = $request->file('Avatar')->store('avatars', 'public');
+                $admin->Avatar = $avatarPath;
+            } else {
+                $admin->Avatar = null;
+            }
+
+            $admin->save();
+
+            // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+            DB::commit();
+
+            return "Cập nhật thành công";
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+            DB::rollback();
+
+            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+            return "Cập nhật thất bại: " . $e->getMessage();
         }
-
-        $dateofbirth = $request->Year . "/" . $request->Month . "/" . $request->Day;
-        $admin->FirstName = $request->FirstName;
-        $admin->LastName = $request->LastName;
-        $admin->name = $request->name;
-        $admin->email = $request->email;
-        $admin->Phone = $request->Phone;
-        $admin->Gender = $request->Gender;
-        $admin->password = Hash::make($request->password);
-        $admin->Address = $request->Address;
-        $admin->DateOfBirth = $dateofbirth;
-
-        // Kiểm tra xem có tải lên hình ảnh (Avatar) hay không
-        if ($request->hasFile('Avatar')) {
-            $avatarPath = $request->file('Avatar')->store('avatars', 'public');
-            $admin->Avatar = $avatarPath;
-        } else {
-            $admin->Avatar = null;
-        }
-
-        $admin->save();
-
-        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
-        DB::commit();
-
-        return "Cập nhật thành công";
-    } catch (\Exception $e) {
-        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
-        DB::rollback();
-
-        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
-        return "Cập nhật thất bại: " . $e->getMessage();
-    }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
        DB::beginTransaction();
 
-    try {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        if (!$admin) {
-            DB::rollback(); // Rollback transaction nếu quản trị viên không tồn tại
-            return response()->json(['message' => 'Admin not found'], 404);
+            if (!$admin) {
+                DB::rollback(); // Rollback transaction nếu quản trị viên không tồn tại
+                return response()->json(['message' => 'Admin not found'], 404);
+            }
+
+            $admin->delete();
+
+            // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
+            DB::commit();
+
+            return response()->json(['message' => 'Admin deleted'], 200);
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
+            DB::rollback();
+
+            // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
+            return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
         }
-
-        $admin->delete();
-
-        // Nếu mọi thứ đều thành công, thì chúng ta commit transaction
-        DB::commit();
-
-        return response()->json(['message' => 'Admin deleted'], 200);
-    } catch (\Exception $e) {
-        // Nếu có lỗi xảy ra, thì chúng ta rollback transaction
-        DB::rollback();
-
-        // Bạn có thể xử lý lỗi ở đây hoặc ném ngoại lệ để Laravel xử lý nó
-        return response()->json(['message' => 'Delete failed: ' . $e->getMessage()], 500);
-    }
 
     }
     public function login(){
