@@ -97,7 +97,7 @@ class CategoryController extends Controller
                 'CategoryName'=>'required',
 
             ]);
-
+            $category->CategoryID = $request->input('CategoryID');
             $category->CategoryName = $request->input('CategoryName');
             $category->save();
 

@@ -17,7 +17,8 @@ class ProductSeeder extends Seeder
         //
         // Product::factory()->count(30)->create();
         DB::table('products')->insert([
-            'ProductID' => 'sun1',
+            'ProductID' => 1,
+            'ProductName' => 'sun1',
             'Speed' => '12km/h',
             'Bandwidth' => '30',
             'Price' => 15000.0,
@@ -32,7 +33,8 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('products')->insert([
-            'ProductID' => 'sun2',
+            'ProductID' => 2,
+            'ProductName' => 'sun2',
             'Speed' => '12km/h',
             'Bandwidth' => '30',
             'Price' => 15000.0,
@@ -47,7 +49,8 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('products')->insert([
-            'ProductID' => 'sun3',
+            'ProductID' => 3,
+            'ProductName' => 'sun3',
             'Speed' => '12km/h',
             'Bandwidth' => '30',
             'Price' => 15000.0,
@@ -62,7 +65,8 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('products')->insert([
-            'ProductID' => 'star1',
+            'ProductID' => 4,
+            'ProductName' => 'star1',
             'Speed' => '12km/h',
             'Bandwidth' => '30',
             'Price' => 15000.0,

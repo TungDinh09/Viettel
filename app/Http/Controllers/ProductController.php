@@ -124,7 +124,7 @@ class ProductController extends Controller
                 'CategoryID'=>'required',
                 'ServiceID'=>'required',
             ]);
-
+            $product->ProductID = $request->input('ProductID');
             $product->ProductName = $request->input('ProductName');
             $product->Price = (int)$request->input('Price');
             $product->Speed = $request->input('Speed');
