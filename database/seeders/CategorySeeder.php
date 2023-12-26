@@ -18,11 +18,13 @@ class CategorySeeder extends Seeder
         //
         DB::table('categories')->insert([
             'CategoryName' => 'Doanh nghiệp ',
+            'sort'=>1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('categories')->insert([
             'CategoryName' => 'Gia đình ',
+            'sort'=>1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

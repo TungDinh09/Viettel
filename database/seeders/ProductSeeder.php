@@ -83,7 +83,7 @@ class ProductSeeder extends Seeder
             'IPstatic' => '30',
             'UseDay' => 5, // Điền giá trị thích hợp
             'CategoryID' => 2, // Điền ID của 'Doanh nghiệp gia đình' từ bảng 'categories'
-            'ServiceID' => 2, // Điền ID của dịch vụ nếu có, nếu không để null
+            'ServiceID' => 1, // Điền ID của dịch vụ nếu có, nếu không để null
             'created_at' => now(),
             'updated_at' => now(),
         ]);

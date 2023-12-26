@@ -12,6 +12,7 @@ class Category extends Model
     protected $primaryKey = 'CategoryID';
     protected $fillable = [
         'CategoryName',
+        'sort',
     ];
    
 }

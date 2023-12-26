@@ -41,10 +41,13 @@ class CategoryController extends Controller
 
          $request->validate([
             'CategoryName'=>'required',
+            'sort'=>'required',
+
 
         ]);
         try {
             $category = new Category();
+            $category->sort = $request->input('sort');
             $category->CategoryName = $request->input('CategoryName');
             $category->save();
 
@@ -95,9 +98,12 @@ class CategoryController extends Controller
             }
             $request->validate([
                 'CategoryName'=>'required',
+                'sort'=>'required',
+
 
             ]);
             $category->CategoryName = $request->input('CategoryName');
+            $category->sort = $request->input('sort');
             $category->save();
 
             // Nếu mọi thứ đều thành công, thì chúng ta commit transaction

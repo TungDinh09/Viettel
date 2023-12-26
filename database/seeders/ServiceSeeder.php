@@ -17,19 +17,11 @@ class ServiceSeeder extends Seeder
         //
         // Service::factory()->count(10)->create();
         DB::table('services')->insert([
-            'ServiceName' => 'Sun ',
-            'Price'=>'12000',
+            'ServiceName' => 'Hỗ trợ lắp đặt',
+            'Price'=>'300000',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        DB::table('services')->insert([
-            'ServiceName' => 'Star ',
-            'Price'=>'12000',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-     
 
     }
 }
