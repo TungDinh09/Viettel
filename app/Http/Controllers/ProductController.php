@@ -86,7 +86,7 @@ class ProductController extends Controller
     {
         // $productID = '"' + $id + '"';
         // echo($productID);
-        $product = Product::where('ProductID','=',$id)->get();
+        $product = Product::where("ProductID",'=', $id)->with('category','service')->get();
         // Trả về dữ liệu sản phẩm dưới dạng JSON
         return response()->json(['product' => $product]);
     }
