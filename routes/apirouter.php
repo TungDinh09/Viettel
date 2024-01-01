@@ -58,7 +58,7 @@ Route::delete('/Channel/destroy/{id}', [ChannelController::class,"destroy"])->mi
 
 Route::get('/blog/detail/{id}', [BlogController::class,"show"]);
 Route::post('/blog/insert', [BlogController::class,"store"])->middleware('auth:admin');
-Route::PATCH('/blog/update/{id}', [BlogController::class,"update"]);
+Route::PATCH('/blog/update/{id}', [BlogController::class,"update"])->middleware('auth:admin');
 Route::delete('/blog/destroy/{id}', [BlogController::class,"destroy"])->middleware('auth:admin');
 
 
