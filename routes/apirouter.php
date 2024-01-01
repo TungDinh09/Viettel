@@ -56,12 +56,13 @@ Route::post('/Channel/create', [ChannelController::class,"store"])->middleware('
 Route::PATCH('/Channel/update/{id}', [ChannelController::class,"update"])->middleware('auth:admin');
 Route::delete('/Channel/destroy/{id}', [ChannelController::class,"destroy"])->middleware('auth:admin');
 
-Route::post('/Blog/create', [BlogController::class,"store"])->middleware('auth:admin');
-Route::PATCH('/Blog/update/{id}', [BlogController::class,"update"])->middleware('auth:admin');
-Route::delete('/Blog/destroy/{id}', [BlogController::class,"destroy"])->middleware('auth:admin');
+Route::get('/blog/detail/{id}', [BlogController::class,"show"]);
+Route::post('/blog/insert', [BlogController::class,"store"])->middleware('auth:admin');
+Route::PATCH('/blog/update/{id}', [BlogController::class,"update"]);
+Route::delete('/blog/destroy/{id}', [BlogController::class,"destroy"])->middleware('auth:admin');
 
 
-Route::get('/category/{id}', [CategoryController::class,"show"]);
+Route::get('/category/detail/{id}', [CategoryController::class,"show"]);
 Route::post('/category/insert', [CategoryController::class,"store"])->middleware('auth:admin');
 Route::PATCH('/category/update/{id}', [CategoryController::class,"update"])->middleware('auth:admin');
 Route::delete('/category/destroy/{id}', [CategoryController::class,"destroy"])->middleware('auth:admin');

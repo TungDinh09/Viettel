@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id("BlogID");
             $table->longText('BlogContent');
-            $table->string('BlogTilte', 225);
-            $table->string('TilteImage', 225);
-            $table->unsignedBigInteger('AdminID');
+            $table->string('BlogTitle', 225);
+            $table->string('TitleImage', 225);
+            // $table->unsignedBigInteger('AdminID');
             $table->timestamps();
 
-            $table->foreign('AdminID')->references('id')->on('admins');
+            // $table->foreign('AdminID')->references('id')->on('admins');
         });
     }
 

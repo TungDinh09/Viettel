@@ -38,11 +38,15 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         $request->validate([
-            'Speed'=>'required',
-            'Bandwidth'=>'required',
-            'IPstatic'=>'required',
-            'UseDay'=>'required',
-            'CategoryID'=>'required',
+            'ProductName'=>'required',
+                'Price'=>'required',
+                'Speed'=>'required',
+                'Bandwidth'=>'required',
+                'Description'=>'required',
+                'IPstatic'=>'required',
+                'UseDay'=>'required',
+                'CategoryID'=>'required',
+                'ServiceID'=>'required',
         ]);
 
         try {

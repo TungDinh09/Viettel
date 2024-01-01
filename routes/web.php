@@ -36,7 +36,7 @@ Route::get('/city', [CityController::class, 'index']);
 Route::get('/district', [DistrictController::class, 'index']);
 Route::get('/payment',[PaymentController::class,'index']);
 // Route::post('/product/filter',[ProductController::class, 'filter']);
-Route::get('/blog', [BlogController::class, 'index']);
+Route::get('/blogs', [BlogController::class, 'index']);
 Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/channel', [ChannelController::class, 'index']);
 Route::get('/service', [ServiceController::class, 'index']);

@@ -99,8 +99,6 @@ class CategoryController extends Controller
             $request->validate([
                 'CategoryName'=>'required',
                 'sort'=>'required',
-
-
             ]);
             $category->CategoryName = $request->input('CategoryName');
             $category->sort = $request->input('sort');

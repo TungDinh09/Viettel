@@ -12,13 +12,12 @@ class Blog extends Model
     protected $primaryKey = 'BlogID';
     protected $fillable = [
         'BlogContent',
-        'BlogTilte',
-        'TilteImage',
-        'AdminID',
+        'BlogTitle',
+        'TitleImage',
     ];
 
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class, 'AdminID', 'AdminID');
-    }
+    // public function admin()
+    // {
+    //     return $this->belongsTo(Admin::class, 'AdminID', 'AdminID');
+    // }
 }
