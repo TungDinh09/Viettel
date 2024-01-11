@@ -27,9 +27,8 @@ use App\Http\Controllers\ServiceController;
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
-require __DIR__.'/adminauth.php';
-require __DIR__.'/apirouter.php';
 
+require __DIR__.'/adminauth.php';
 //-------------------- get ----------------
 Route::get('/product', [ProductController::class, 'index']);
 Route::get('/city', [CityController::class, 'index']);
@@ -41,3 +40,5 @@ Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/channel', [ChannelController::class, 'index']);
 Route::get('/service', [ServiceController::class, 'index']);
 Route::get('/orders', [OrderController::class, 'index']);
+
+require __DIR__.'/apirouter.php';
